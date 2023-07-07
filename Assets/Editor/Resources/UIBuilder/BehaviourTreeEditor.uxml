@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Editor/Resources/UIBuilder/BehaviourTreeEditor.uss?fileID=7433441132597879392&amp;guid=888b11796aac8c642a01a5894ca99601&amp;type=3#BehaviourTreeEditor" />
+    <uie:Toolbar>
+        <ui:TextField picking-mode="Ignore" label="btName" value="filler text" name="nameTextField" style="font-size: 14px; color: rgb(255, 255, 255);" />
+        <ui:Button text="saveData" display-tooltip-when-elided="true" name="saveBtn" view-data-key="saveBtn" style="white-space: nowrap; width: 96px; background-color: rgb(53, 53, 53); color: rgb(255, 255, 255);" />
+        <uie:ObjectField label="treeField" name="treeField" />
+        <ui:Button text="loadData" display-tooltip-when-elided="true" name="loadBtn" view-data-key="saveBtn" style="white-space: nowrap; width: 96px; background-color: rgb(53, 53, 53); color: rgb(255, 255, 255);" />
+    </uie:Toolbar>
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: flex-start;">
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgb(60, 60, 60); flex-direction: column; width: 60%;">
+            <ui:Label tabindex="-1" text="节点图" display-tooltip-when-elided="true" style="color: rgb(194, 217, 255);" />
+            <BehaviorTreeView focusable="true" style="flex-grow: 1;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgb(56, 56, 56); height: auto; width: auto; max-width: none; min-width: auto; align-self: stretch;">
+            <ui:Label tabindex="-1" text="Inspector" display-tooltip-when-elided="true" style="color: rgb(194, 217, 255); -unity-background-image-tint-color: rgb(255, 255, 255); background-color: rgb(60, 60, 60);" />
+            <InspectorView style="background-color: rgb(56, 56, 56);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
