@@ -1,21 +1,10 @@
-using Codice.Client.BaseCommands;
-using log4net.Core;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Reflection;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UI;
 using UnityEngine.UIElements;
-using static SearchMenuWindowProvider;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.EventSystems.EventTrigger;
 using Edge = UnityEditor.Experimental.GraphView.Edge;
 
 public class BehaviorTreeView : GraphView
