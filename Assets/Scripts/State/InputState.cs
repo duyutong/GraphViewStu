@@ -29,7 +29,7 @@ public class InputState : BehaviorTreeBaseState
         }
     }
     private InputStateObj _stateObj;
-    public override void Init(string param)
+    public override void InitParam(string param)
     {
         DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(InputStateObj));
         using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(param)))
@@ -43,7 +43,6 @@ public class InputState : BehaviorTreeBaseState
     {
         state = EBTState.执行中;
         direction = Vector2.zero;
-        Debug.Log("InputState ----- OnEnter");
     }
     public override void OnUpdate()
     {
@@ -61,7 +60,6 @@ public class InputState : BehaviorTreeBaseState
     public override void OnExit()
     {
         state = EBTState.完成;
-        Debug.Log("InputState ----- OnExit");
     }
     private void OnPointerUp()
     {

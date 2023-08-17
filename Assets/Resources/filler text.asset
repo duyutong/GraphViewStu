@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a82911627f4159419e3264d17be5abb, type: 3}
   m_Name: filler text
   m_EditorClassIdentifier: 
-  startGuid: adbaa554-933e-4dd4-8bfe-af8c9b2e92cb
   nodeDatas:
   - nodeName: Start
     guid: adbaa554-933e-4dd4-8bfe-af8c9b2e92cb
@@ -24,15 +23,6 @@ MonoBehaviour:
     typeName: StartTrigger
     stateName: StartState
     stateParams: '{"hideFlags":0,"name":"","text":"StartState"}'
-  - nodeName: Move
-    guid: 33935430-5aa7-477d-b449-a59fe467bcad
-    lastNodes:
-    - fe8a2a84-d38c-49d5-abd5-6109e4f0fac8
-    output: []
-    nodePos: {x: 299, y: 23}
-    typeName: MoveBehav
-    stateName: MoveState
-    stateParams: '{"hideFlags":0,"name":"","direction":{"x":0,"y":0},"moveTime":3,"output":[],"speed":2,"state":0}'
   - nodeName: Input
     guid: fe8a2a84-d38c-49d5-abd5-6109e4f0fac8
     lastNodes:
@@ -42,10 +32,19 @@ MonoBehaviour:
       toPortName: direction
     - fromPortName: result
       toPortName: direction
-    nodePos: {x: 113, y: -38}
+    nodePos: {x: 151, y: -91}
     typeName: InputTrigger
     stateName: InputState
     stateParams: '{"hideFlags":0,"name":"","direction":{"x":0,"y":0},"output":[{"fromPortName":"result","toPortName":"direction","value":null}],"state":0}'
+  - nodeName: Move
+    guid: 33935430-5aa7-477d-b449-a59fe467bcad
+    lastNodes:
+    - fe8a2a84-d38c-49d5-abd5-6109e4f0fac8
+    output: []
+    nodePos: {x: 365, y: -91}
+    typeName: MoveBehav
+    stateName: MoveState
+    stateParams: '{"hideFlags":0,"name":"","direction":{"x":0,"y":0},"moveTime":3,"output":[],"speed":2,"state":0}'
   edgeDatas:
   - outPortNode: adbaa554-933e-4dd4-8bfe-af8c9b2e92cb
     intputPortNode: fe8a2a84-d38c-49d5-abd5-6109e4f0fac8

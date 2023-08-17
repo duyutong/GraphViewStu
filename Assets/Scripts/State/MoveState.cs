@@ -14,6 +14,7 @@ public class MoveState : BehaviorTreeBaseState
     public Vector2 direction;
     public float speed;
     public float moveTime;
+
     private float _timeCount;
     public override ScriptableObject stateObj
     {
@@ -32,7 +33,7 @@ public class MoveState : BehaviorTreeBaseState
         }
     }
     private MoveStateObj _stateObj;
-    public override void Init(string param)
+    public override void InitParam(string param)
     {
         DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(MoveStateObj));
         using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(param)))
@@ -43,7 +44,6 @@ public class MoveState : BehaviorTreeBaseState
             output = _stateObj.output;
             moveTime = _stateObj.moveTime;
         }
-
     }
     public override void Save()
     {
@@ -55,7 +55,6 @@ public class MoveState : BehaviorTreeBaseState
     {
         base.OnEnter();
         _timeCount = moveTime;
-        Debug.Log("MoveState ----- OnEnter _timeCount = " + _timeCount);
         OnExecute();
     }
 
@@ -67,7 +66,6 @@ public class MoveState : BehaviorTreeBaseState
         if (_timeCount <= 0)
         {
             OnExit();
-            Debug.Log("MoveState ----- OnExit");
             return;
         }
         else

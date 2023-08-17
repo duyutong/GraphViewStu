@@ -7,8 +7,9 @@ using UnityEngine;
 [Serializable]
 public class BTContainer : ScriptableObject
 {
-    public string startGuid;
+    [HideInInspector]
     public List<NodeData> nodeDatas = new List<NodeData>();
+    [HideInInspector]
     public List<EdgeData>edgeDatas = new List<EdgeData>();
 }
 [Serializable]

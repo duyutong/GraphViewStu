@@ -11,7 +11,7 @@ public class MoveBehav : BehaviorNode
     public MoveBehav() : base()
     {
         title = "Move";
-
+       
         Port ePort = GetPortForNode(this, Direction.Input, typeof(bool), Port.Capacity.Single);
         ePort.portName = "enter";
         inputContainer.Add(ePort);

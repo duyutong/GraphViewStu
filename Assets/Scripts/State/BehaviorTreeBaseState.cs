@@ -8,14 +8,19 @@ using UnityEngine;
 [Serializable]
 public class BehaviorTreeBaseState
 {
-    public List<BehaviorTreeBaseState> lastStates = new List<BehaviorTreeBaseState>();
     public EBTState state = EBTState.未开始;
     public string stateName = "*BehaviorTreeBaseState";
+    public string nodeId;
     public BTRuntimeComponent runtime;
+    public List<SBTOutputInfo> output = new List<SBTOutputInfo>();
+    public List<BehaviorTreeBaseState> lastStates;
     public virtual ScriptableObject stateObj { get; }
-    public virtual void Init(string param) { }
+   
+    public virtual void InitParam(string param) { }
     public virtual void InitValue()
     {
+        if (runtime.lastStateDic[nodeId].Count == 0) return;
+
         Type type = GetType();
         foreach (BehaviorTreeBaseState lastState in lastStates)
         {
@@ -45,7 +50,16 @@ public class BehaviorTreeBaseState
             output.Add(newInfo);
     }
     public virtual void Save() { }
-    public List<SBTOutputInfo> output = new List<SBTOutputInfo>();
+    
+    public virtual void OnInitFinish() 
+    {
+        if (lastStates == null)
+        {
+            lastStates = new List<BehaviorTreeBaseState>();
+            List<string> lastStateIds = runtime.lastStateDic[nodeId];
+            foreach (string id in lastStateIds) lastStates.Add(runtime.stateDic[id]);
+        }
+    }
     public virtual void OnEnter() { InitValue(); state = EBTState.进入; }
 
     public virtual void OnExecute() { state = EBTState.执行中; }
@@ -64,6 +78,32 @@ public class BehaviorTreeBaseState
             output[i] = info;
         }
     }
+    public T GetLastCoupleState<T>(Func<T, bool> selectFunc) where T : BehaviorTreeBaseState
+    {
+        T result = this as T;
+        if (result != null && selectFunc(result)) return result;
+        else
+        {
+            foreach (BehaviorTreeBaseState _state in lastStates)
+            {
+                if (_state.GetLastCoupleState(selectFunc) == null) continue;
+                else return _state.GetLastCoupleState(selectFunc);
+            }
+        }
+        return result;
+    }
+    /// <summary>
+    /// 对自己做某种操作，并将操作向前置节点传染，直到检查到的节点符合某种条件
+    /// </summary>
+    public void Infect(Action<BehaviorTreeBaseState> action,Func<BehaviorTreeBaseState,bool> checkFunc)
+    {
+        action(this);
+        if (checkFunc(this)) return;
+        foreach (BehaviorTreeBaseState _state in lastStates) 
+        {
+            _state.Infect(action,checkFunc);
+        }
+    }
     public virtual void OnUpdate()
     {
         if (state != EBTState.执行中) goto wait;
@@ -78,6 +118,7 @@ public enum EBTState
     进入,
     执行中,
     完成,
+    等待,
 }
 [Serializable]
 public struct SBTOutputInfo

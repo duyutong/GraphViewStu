@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a82911627f4159419e3264d17be5abb, type: 3}
+  m_Name: loopTest
+  m_EditorClassIdentifier: 
+  startGuid: 766347bc-bbce-4969-9d26-9b3760bf4b80
+  nodeDatas:
+  - nodeName: Start
+    guid: 766347bc-bbce-4969-9d26-9b3760bf4b80
+    lastNodes: []
+    output:
+    - fromPortName: next
+      toPortName: enter
+    nodePos: {x: 0, y: 0}
+    typeName: StartTrigger
+    stateName: StartState
+    stateParams: '{"hideFlags":0,"name":"","text":"StartState"}'
+  - nodeName: Debug
+    guid: 6953f420-1d96-40d6-92b1-bad7538ae4af
+    lastNodes:
+    - 766347bc-bbce-4969-9d26-9b3760bf4b80
+    output:
+    - fromPortName: exit
+      toPortName: enter
+    nodePos: {x: 153, y: 0}
+    typeName: DebugDeco
+    stateName: DebugState
+    stateParams: "{\"hideFlags\":0,\"name\":\"\",\"logStr\":\"\u5F00\u59CB\uFF01\",\"state\":0}"
+  - nodeName: Loop
+    guid: be7b930f-4219-48fd-b87c-6e8eca069205
+    lastNodes:
+    - 6953f420-1d96-40d6-92b1-bad7538ae4af
+    output:
+    - fromPortName: exit
+      toPortName: enter
+    nodePos: {x: 366, y: -90}
+    typeName: LoopDeco
+    stateName: LoopState
+    stateParams: '{"hideFlags":0,"name":"","loopCount":0,"loopState":0,"state":0}'
+  - nodeName: Debug
+    guid: ce9289e8-c033-4615-8ba0-3f8394359ecd
+    lastNodes:
+    - be7b930f-4219-48fd-b87c-6e8eca069205
+    output:
+    - fromPortName: exit
+      toPortName: enter
+    nodePos: {x: 536, y: -89}
+    typeName: DebugDeco
+    stateName: DebugState
+    stateParams: "{\"hideFlags\":0,\"name\":\"\",\"logStr\":\"\u5FAA\u73AF\u4E2D\uFF01\",\"state\":0}"
+  - nodeName: Loop
+    guid: 62c446ca-a878-4f5e-81c7-69426069953c
+    lastNodes:
+    - ce9289e8-c033-4615-8ba0-3f8394359ecd
+    output: []
+    nodePos: {x: 697, y: -89}
+    typeName: LoopDeco
+    stateName: LoopState
+    stateParams: '{"hideFlags":0,"name":"","loopCount":3,"loopState":1,"state":0}'
+  edgeDatas:
+  - outPortNode: 766347bc-bbce-4969-9d26-9b3760bf4b80
+    intputPortNode: 6953f420-1d96-40d6-92b1-bad7538ae4af
+    outPortName: next
+    intputPortName: enter
+  - outPortNode: 6953f420-1d96-40d6-92b1-bad7538ae4af
+    intputPortNode: be7b930f-4219-48fd-b87c-6e8eca069205
+    outPortName: exit
+    intputPortName: enter
+  - outPortNode: be7b930f-4219-48fd-b87c-6e8eca069205
+    intputPortNode: ce9289e8-c033-4615-8ba0-3f8394359ecd
+    outPortName: exit
+    intputPortName: enter
+  - outPortNode: ce9289e8-c033-4615-8ba0-3f8394359ecd
+    intputPortNode: 62c446ca-a878-4f5e-81c7-69426069953c
+    outPortName: exit
+    intputPortName: enter

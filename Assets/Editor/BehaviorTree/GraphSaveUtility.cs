@@ -66,7 +66,6 @@ public static class GraphSaveUtility
             data.output = baseNode.btState.output;
             data.stateName = baseNode.stateName;
             container.nodeDatas.Add(data);
-            if (baseNode.lastNodes.Count == 0) { container.startGuid = baseNode.guid; }
         }
 
         AssetDatabase.CreateAsset(container, $"Assets/Resources/{fileName}.asset");

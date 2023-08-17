@@ -70,7 +70,7 @@ public class BehaviorTreeView : GraphView
 
         Type stateType = GetType(node.stateName);
         BehaviorTreeBaseState btState = (BehaviorTreeBaseState)Activator.CreateInstance(stateType);
-        btState.Init(nodeData.stateParams);
+        btState.InitParam(nodeData.stateParams);
         node.onSelectAction = onSelectAction;
         node.target = selectionTarget;
         node.btState = btState;
@@ -161,16 +161,16 @@ public class BehaviorTreeView : GraphView
         if (change.edgesToCreate != null)
         {
             change.edgesToCreate.ForEach((edge) =>
-        {
-            BehaviorTreeBaseNode fromNode = edge.output.node as BehaviorTreeBaseNode;
-            BehaviorTreeBaseNode toNode = edge.input.node as BehaviorTreeBaseNode;
-            toNode.lastNodes.Add(fromNode);
+            {
+                BehaviorTreeBaseNode fromNode = edge.output.node as BehaviorTreeBaseNode;
+                BehaviorTreeBaseNode toNode = edge.input.node as BehaviorTreeBaseNode;
+                toNode.lastNodes.Add(fromNode);
 
-            SBTOutputInfo info = new SBTOutputInfo();
-            info.fromPortName = edge.output.portName;
-            info.toPortName = edge.input.portName;
-            fromNode.btState.RefreshOutput(info,false);
-        });
+                SBTOutputInfo info = new SBTOutputInfo();
+                info.fromPortName = edge.output.portName;
+                info.toPortName = edge.input.portName;
+                fromNode.btState.RefreshOutput(info,false);
+            });
         }
         nodes.ForEach((n) =>
         {
@@ -203,6 +203,10 @@ public class SearchMenuWindowProvider : ScriptableObject, ISearchWindowProvider
         Debug.Log("CreateSearchTree");
         List<SearchTreeEntry> entries = new List<SearchTreeEntry>();
         entries.Add(new SearchTreeGroupEntry(new GUIContent("创建新节点")));
+
+        entries.Add(new SearchTreeGroupEntry(new GUIContent("装饰器")) { level = 1 });
+        List<SearchTreeEntry> decorators = GetEntries<DecoratorNode>(2);
+        entries.AddRange(decorators);
 
         entries.Add(new SearchTreeGroupEntry(new GUIContent("触发器")) { level = 1 });
         List<SearchTreeEntry> triggers = GetEntries<TriggerNode>(2);

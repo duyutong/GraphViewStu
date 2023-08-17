@@ -5,6 +5,7 @@ using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEditor.Search;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using ObjectField = UnityEditor.UIElements.ObjectField;
@@ -54,6 +55,7 @@ public class BehaviourTreeEditor : EditorWindow
         BTContainer container = treeField.value as BTContainer;
         if (container == null) return;
         if (container.nodeDatas.Count == 0) Debug.Log("没有数据！");
+        nameTextField.value = container.name;
         behaviorTreeView.LoadData(container);
     }
     private void OnClickSaveBtn()
