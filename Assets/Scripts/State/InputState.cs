@@ -41,25 +41,21 @@ public class InputState : BehaviorTreeBaseState
     }
     public override void OnEnter()
     {
-        state = EBTState.执行中;
         direction = Vector2.zero;
+        OnExecute();
     }
     public override void OnUpdate()
     {
-        if (Input.anyKey) OnExecute();
+        if (Input.anyKey) OnInputKey();
         if (isInput && !Input.anyKey) OnPointerUp();
     }
-    public override void OnExecute()
+    private void OnInputKey()
     {
         if (Input.GetKey(KeyCode.W)) direction = new Vector2(direction.x, 1);
         if (Input.GetKey(KeyCode.A)) direction = new Vector2(-1, direction.y);
         if (Input.GetKey(KeyCode.S)) direction = new Vector2(direction.x, -1);
         if (Input.GetKey(KeyCode.D)) direction = new Vector2(1, direction.y);
 
-    }
-    public override void OnExit()
-    {
-        state = EBTState.完成;
     }
     private void OnPointerUp()
     {

@@ -9,7 +9,7 @@ public class StartTrigger : TriggerNode
     public StartTrigger() : base()
     {
         title = "Start";
-        Port oPort = GetPortForNode(this, Direction.Output, typeof(bool), Port.Capacity.Single);
+        Port oPort = GetPortForNode(this, Direction.Output, typeof(bool), Port.Capacity.Multi);
         oPort.portName = "next";
         outputContainer.Add(oPort);
     }

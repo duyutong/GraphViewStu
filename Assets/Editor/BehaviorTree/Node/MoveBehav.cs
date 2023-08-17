@@ -25,8 +25,12 @@ public class MoveBehav : BehaviorNode
         inputContainer.Add(dirPort);
 
 
-        Port oPort = GetPortForNode(this, Direction.Output, typeof(Vector3), Port.Capacity.Single);
-        oPort.portName = "targetPos";
+        Port tPort = GetPortForNode(this, Direction.Output, typeof(Vector3), Port.Capacity.Multi);
+        tPort.portName = "targetPos";
+        outputContainer.Add(tPort);
+
+        Port oPort = GetPortForNode(this, Direction.Output, typeof(bool), Port.Capacity.Multi);
+        oPort.portName = "exit";
         outputContainer.Add(oPort);
     }
 }

@@ -58,8 +58,12 @@ public class LoopState : BehaviorTreeBaseState
         if (loopState == ELoopState.Ñ­»·¿ªÊ¼) OnExit();
         else
         {
-            --currCount;
-            if (currCount == 0) { OnExit(); return; }
+            if (loopCount >= 0)
+            { 
+                --currCount;
+                if (currCount <= 0) { OnExit(); return; }
+            }
+           
             base.OnExecute();
             Infect((_s) =>
             {

@@ -13,20 +13,10 @@ MonoBehaviour:
   m_Name: filler text
   m_EditorClassIdentifier: 
   nodeDatas:
-  - nodeName: Start
-    guid: adbaa554-933e-4dd4-8bfe-af8c9b2e92cb
-    lastNodes: []
-    output:
-    - fromPortName: next
-      toPortName: enter
-    nodePos: {x: 0, y: 0}
-    typeName: StartTrigger
-    stateName: StartState
-    stateParams: '{"hideFlags":0,"name":"","text":"StartState"}'
   - nodeName: Input
     guid: fe8a2a84-d38c-49d5-abd5-6109e4f0fac8
     lastNodes:
-    - adbaa554-933e-4dd4-8bfe-af8c9b2e92cb
+    - b6f03e52-7174-41d9-9908-59f396e7e37f
     output:
     - fromPortName: result
       toPortName: direction
@@ -40,17 +30,59 @@ MonoBehaviour:
     guid: 33935430-5aa7-477d-b449-a59fe467bcad
     lastNodes:
     - fe8a2a84-d38c-49d5-abd5-6109e4f0fac8
-    output: []
+    output:
+    - fromPortName: exit
+      toPortName: enter
     nodePos: {x: 365, y: -91}
     typeName: MoveBehav
     stateName: MoveState
     stateParams: '{"hideFlags":0,"name":"","direction":{"x":0,"y":0},"moveTime":3,"output":[],"speed":2,"state":0}'
+  - nodeName: Start
+    guid: adbaa554-933e-4dd4-8bfe-af8c9b2e92cb
+    lastNodes: []
+    output:
+    - fromPortName: next
+      toPortName: enter
+    - fromPortName: next
+      toPortName: enter
+    nodePos: {x: -175, y: -4}
+    typeName: StartTrigger
+    stateName: StartState
+    stateParams: '{"hideFlags":0,"name":"","text":"StartState"}'
+  - nodeName: Loop
+    guid: 24ae04e4-8727-477b-92df-72067246ec40
+    lastNodes:
+    - 33935430-5aa7-477d-b449-a59fe467bcad
+    output: []
+    nodePos: {x: 621, y: -91}
+    typeName: LoopDeco
+    stateName: LoopState
+    stateParams: '{"hideFlags":0,"name":"","loopCount":-1,"loopState":1,"state":0}'
+  - nodeName: Loop
+    guid: b6f03e52-7174-41d9-9908-59f396e7e37f
+    lastNodes:
+    - adbaa554-933e-4dd4-8bfe-af8c9b2e92cb
+    output:
+    - fromPortName: exit
+      toPortName: enter
+    nodePos: {x: -29, y: -91}
+    typeName: LoopDeco
+    stateName: LoopState
+    stateParams: '{"hideFlags":0,"name":"","loopCount":0,"loopState":0,"state":0}'
   edgeDatas:
-  - outPortNode: adbaa554-933e-4dd4-8bfe-af8c9b2e92cb
-    intputPortNode: fe8a2a84-d38c-49d5-abd5-6109e4f0fac8
-    outPortName: next
-    intputPortName: enter
   - outPortNode: fe8a2a84-d38c-49d5-abd5-6109e4f0fac8
     intputPortNode: 33935430-5aa7-477d-b449-a59fe467bcad
     outPortName: result
     intputPortName: direction
+  - outPortNode: adbaa554-933e-4dd4-8bfe-af8c9b2e92cb
+    intputPortNode: b6f03e52-7174-41d9-9908-59f396e7e37f
+    outPortName: next
+    intputPortName: enter
+  - outPortNode: b6f03e52-7174-41d9-9908-59f396e7e37f
+    intputPortNode: fe8a2a84-d38c-49d5-abd5-6109e4f0fac8
+    outPortName: exit
+    intputPortName: enter
+  - outPortNode: 33935430-5aa7-477d-b449-a59fe467bcad
+    intputPortNode: 24ae04e4-8727-477b-92df-72067246ec40
+    outPortName: exit
+    intputPortName: enter
