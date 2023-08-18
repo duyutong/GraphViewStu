@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class LoopDeco : DecoratorNode
+public class Deco_Loop : DecoratorNode
 {
     public override string stateName => "LoopState";
-    public LoopDeco() : base() 
+    public Deco_Loop() : base() 
     {
         title = "Loop";
 

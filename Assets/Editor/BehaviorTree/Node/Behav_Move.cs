@@ -5,10 +5,10 @@ using UnityEditor.Experimental.GraphView;
 using UnityEditor.TerrainTools;
 using UnityEngine;
 
-public class MoveBehav : BehaviorNode
+public class Behav_Move : BehaviorNode
 {
     public override string stateName => "MoveState";
-    public MoveBehav() : base()
+    public Behav_Move() : base()
     {
         title = "Move";
        

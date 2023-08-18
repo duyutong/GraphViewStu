@@ -4,10 +4,10 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class InputTrigger : TriggerNode
+public class Trigger_Input : TriggerNode
 {
     public override string stateName => "InputState";
-    public InputTrigger() : base() 
+    public Trigger_Input() : base() 
     {
         title = "Input";
         Port oPort = GetPortForNode(this, Direction.Output, typeof(Vector2), Port.Capacity.Single);

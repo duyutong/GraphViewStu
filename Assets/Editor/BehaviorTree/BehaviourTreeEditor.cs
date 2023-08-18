@@ -48,6 +48,8 @@ public class BehaviourTreeEditor : EditorWindow
         loadBtn.clicked += OnClickLoadBtn;
 
         treeField = root.Q<ObjectField>("treeField");
+        treeField.objectType = typeof(BTContainer);
+
         nameTextField = root.Q<TextField>("nameTextField");
     }
     private void OnClickLoadBtn() 

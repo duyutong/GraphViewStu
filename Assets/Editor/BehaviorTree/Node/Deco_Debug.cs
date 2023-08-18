@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class DebugDeco : DecoratorNode
+public class Deco_Debug : DecoratorNode
 {
     public override string stateName => "DebugState";
-    public DebugDeco() : base() 
+    public Deco_Debug() : base() 
     {
         title = "Debug";
 

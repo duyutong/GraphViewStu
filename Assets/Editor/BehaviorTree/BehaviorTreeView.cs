@@ -99,12 +99,6 @@ public class BehaviorTreeView : GraphView
     }
     public void LoadData(BTContainer container)
     {
-        //Clear();
-        //Insert(0, new GridBackground());
-        ////添加背景网格样式
-        //StyleSheet styleSheet = Resources.Load<StyleSheet>("UIBuilder/BehaviourTreeEditor");
-        //styleSheets.Add(styleSheet);
-
         foreach (NodeData nodeData in container.nodeDatas)
             LoadNode(nodeData);
         foreach (EdgeData edgeData in container.edgeDatas)

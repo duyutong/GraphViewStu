@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class StartTrigger : TriggerNode
+public class Trigger_Start : TriggerNode
 {
     public override string stateName => "StartState";
-    public StartTrigger() : base()
+    public Trigger_Start() : base()
     {
         title = "Start";
         Port oPort = GetPortForNode(this, Direction.Output, typeof(bool), Port.Capacity.Multi);
