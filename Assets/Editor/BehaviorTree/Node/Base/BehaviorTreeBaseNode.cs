@@ -7,6 +7,7 @@ using Node = UnityEditor.Experimental.GraphView.Node;
 using Unity.VisualScripting;
 using UnityEngine.UIElements;
 using System;
+using static UnityEditor.Experimental.GraphView.Port;
 
 public abstract class BehaviorTreeBaseNode : Node
 {
@@ -15,9 +16,9 @@ public abstract class BehaviorTreeBaseNode : Node
     public string guid;
     public Type type;
     public GameObject target;
-    public BehaviorTreeView graphView;
     public List<BehaviorTreeBaseNode> lastNodes = new List<BehaviorTreeBaseNode>();
     public Action<BehaviorTreeBaseNode> onSelectAction; //选中节点后，将节点信息返回出去
+    public Action onUnselected;//取消选择回调
     public BehaviorTreeBaseState btState;
 
     public BehaviorTreeBaseNode()
@@ -30,9 +31,18 @@ public abstract class BehaviorTreeBaseNode : Node
         base.OnSelected();
         onSelectAction?.Invoke(this);
     }
+    public override void OnUnselected()
+    {
+        base.OnUnselected();
+        onUnselected?.Invoke();
+    }
     public Port GetPortForNode(Node n, Direction portDir,Type type, Port.Capacity capacity = Port.Capacity.Single)
     {
         return n.InstantiatePort(Orientation.Horizontal, portDir, capacity, type);
+    }
+    public Port GetPortForNode(SBTNodePort port) 
+    {
+        return port.node.InstantiatePort(Orientation.Horizontal, port.direction, port.capacity, port.portType);
     }
     public Port GetPortByName(string name, Direction direction)
     {
@@ -51,5 +61,14 @@ public abstract class BehaviorTreeBaseNode : Node
 public class BehaviorTreeBaseNode<IBTState>: BehaviorTreeBaseNode
 {
 
+}
+[Serializable]
+public struct SBTNodePort
+{
+    public Node node;
+    public string portName;
+    public Direction direction;
+    public Capacity capacity;
+    public Type portType;
 }
 

@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Editor/Resources/UIBuilder/CustomNodeEditor.uss?fileID=7433441132597879392&amp;guid=4c54fffc2570c5a4182b7c598023926f&amp;type=3#CustomNodeEditor" />
+    <GridBackView focusable="true" style="flex-grow: 1; position: absolute; width: 100%; height: 100%;" />
+    <uie:Toolbar style="flex-shrink: 1; height: 26px;">
+        <ui:TextField picking-mode="Ignore" label="NodeName" value="filler text" text="node name" name="nameTextField" class="toolbar-item">
+            <ui:Button text="Create" display-tooltip-when-elided="true" name="createBtn" />
+        </ui:TextField>
+    </uie:Toolbar>
+    <ui:VisualElement style="position: absolute; width: 200px; height: 300px; transform-origin: left bottom; min-width: auto; min-height: auto; background-color: rgba(56, 56, 56, 0); left: 3px; bottom: 3px;">
+        <ui:Label text="PortSetting" display-tooltip-when-elided="true" class="window-title-center" />
+        <ui:ScrollView vertical-scroller-visibility="Auto" style="flex-grow: 1; background-color: rgb(56, 56, 56); border-top-left-radius: 0; border-bottom-left-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 5px;" />
+    </ui:VisualElement>
+</ui:UXML>

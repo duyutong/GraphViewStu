@@ -10,15 +10,11 @@ using Edge = UnityEditor.Experimental.GraphView.Edge;
 public class BehaviorTreeView : GraphView
 {
     public Action<BehaviorTreeBaseNode> onSelectAction;
+    public Action onUnselectAction;
     public GameObject selectionTarget;
     public new class UxmlFactory : UxmlFactory<BehaviorTreeView, UxmlTraits> { }
     public BehaviorTreeView()
     {
-        Insert(0, new GridBackground());
-        //添加背景网格样式
-        StyleSheet styleSheet = Resources.Load<StyleSheet>("UIBuilder/BehaviourTreeEditor");
-        styleSheets.Add(styleSheet);
-
         // 允许对Graph进行Zoom in/out
         SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
         // 允许拖拽Content
@@ -50,10 +46,10 @@ public class BehaviorTreeView : GraphView
 
         Type stateType = GetType(node.stateName);
         node.onSelectAction = onSelectAction;
+        node.onUnselected = onUnselectAction;
         node.target = selectionTarget;
         node.btState = (BehaviorTreeBaseState)Activator.CreateInstance(stateType);
         node.nodePos = pos;
-        node.graphView = this;
         node.SetPosition(new Rect(pos, node.GetPosition().size));
 
         AddElement(node);
@@ -72,11 +68,11 @@ public class BehaviorTreeView : GraphView
         BehaviorTreeBaseState btState = (BehaviorTreeBaseState)Activator.CreateInstance(stateType);
         btState.InitParam(nodeData.stateParams);
         node.onSelectAction = onSelectAction;
+        node.onUnselected = onUnselectAction;
         node.target = selectionTarget;
         node.btState = btState;
         node.guid = nodeData.guid;
         node.btState.output = nodeData.output;
-        node.graphView = this;
         node.SetPosition(new Rect(nodeData.nodePos, node.GetPosition().size));
 
         AddElement(node);

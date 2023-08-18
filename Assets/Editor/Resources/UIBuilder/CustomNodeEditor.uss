@@ -3,6 +3,7 @@ GridBackground {
     --thick-line-color: rgba(193, 196, 192, 0.1);
     --spacing: 15;
 }
+
 .unity-label {
     width: initial;
     min-width: 50px;
@@ -11,7 +12,7 @@ GridBackground {
 }
 
 .toolbar-item {
-    background-color: rgba(101, 101, 101, 255);
+    background-color: rgb(101, 101, 101);
     width: 300px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -21,12 +22,12 @@ GridBackground {
     height: auto;
 }
 
-.window-title {
-    background-color: rgb(47, 47, 47);
-    transform-origin: left top;
-    width: 60px;
-    color: rgba(255, 255, 255, 255);
+.window-title-center {
+    margin-left: 0;
     -unity-text-align: middle-center;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    background-color: rgba(43, 43, 43, 255);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-color: rgba(14, 14, 14, 255);
+    border-bottom-width: 1px;
 }

@@ -70,23 +70,6 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="MemoryUsageBreakdownElement" substitutionGroup="engine:VisualElement" xmlns:q4="Unity.Profiling.Editor" type="q4:MemoryUsageBreakdownElementType" />
-  <xs:simpleType name="SelectableLabel_keyboard-type_Type">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Default" />
-      <xs:enumeration value="ASCIICapable" />
-      <xs:enumeration value="NumbersAndPunctuation" />
-      <xs:enumeration value="URL" />
-      <xs:enumeration value="NumberPad" />
-      <xs:enumeration value="PhonePad" />
-      <xs:enumeration value="NamePhonePad" />
-      <xs:enumeration value="EmailAddress" />
-      <xs:enumeration value="NintendoNetworkAccount" />
-      <xs:enumeration value="Social" />
-      <xs:enumeration value="Search" />
-      <xs:enumeration value="DecimalPad" />
-      <xs:enumeration value="OneTimeCode" />
-    </xs:restriction>
-  </xs:simpleType>
   <xs:complexType name="SelectableLabelType">
     <xs:complexContent mixed="false">
       <xs:restriction base="engine:VisualElementType">
@@ -109,15 +92,13 @@
         <xs:attribute default="-1" name="max-length" type="xs:int" use="optional" />
         <xs:attribute default="false" name="password" type="xs:boolean" use="optional" />
         <xs:attribute default="*" name="mask-character" type="xs:string" use="optional" />
+        <xs:attribute default="" name="text" type="xs:string" use="optional" />
         <xs:attribute default="false" name="readonly" type="xs:boolean" use="optional" />
         <xs:attribute default="false" name="is-delayed" type="xs:boolean" use="optional" />
-        <xs:attribute default="false" name="hide-mobile-input" type="xs:boolean" use="optional" />
-        <xs:attribute default="Default" name="keyboard-type" xmlns:q5="Unity.Profiling.Editor" type="q5:SelectableLabel_keyboard-type_Type" use="optional" />
-        <xs:attribute default="false" name="auto-correction" type="xs:boolean" use="optional" />
         <xs:attribute default="false" name="multiline" type="xs:boolean" use="optional" />
         <xs:anyAttribute processContents="lax" />
       </xs:restriction>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="SelectableLabel" substitutionGroup="engine:VisualElement" xmlns:q6="Unity.Profiling.Editor" type="q6:SelectableLabelType" />
+  <xs:element name="SelectableLabel" substitutionGroup="engine:VisualElement" xmlns:q5="Unity.Profiling.Editor" type="q5:SelectableLabelType" />
 </xs:schema>
