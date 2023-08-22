@@ -2,12 +2,18 @@
     <Style src="project://database/Assets/Editor/Resources/UIBuilder/CustomNodeEditor.uss?fileID=7433441132597879392&amp;guid=4c54fffc2570c5a4182b7c598023926f&amp;type=3#CustomNodeEditor" />
     <GridBackView focusable="true" style="flex-grow: 1; position: absolute; width: 100%; height: 100%;" />
     <uie:Toolbar style="flex-shrink: 1; height: 26px;">
-        <ui:TextField picking-mode="Ignore" label="NodeName" value="filler text" text="node name" name="nameTextField" class="toolbar-item">
+        <ui:TextField picking-mode="Ignore" label="NodeName" value="filler text" text="node name" name="nameTextField" class="toolbar-item" style="width: 500px;">
+            <uie:EnumField label="Extends :" value="Center" name="nodeTypeField" style="width: 200px; justify-content: space-around; flex-shrink: 0;" />
             <ui:Button text="Create" display-tooltip-when-elided="true" name="createBtn" />
         </ui:TextField>
     </uie:Toolbar>
-    <ui:VisualElement style="position: absolute; width: 200px; height: 300px; transform-origin: left bottom; min-width: auto; min-height: auto; background-color: rgba(56, 56, 56, 0); left: 3px; bottom: 3px;">
-        <ui:Label text="PortSetting" display-tooltip-when-elided="true" class="window-title-center" />
-        <ui:ScrollView vertical-scroller-visibility="Auto" style="flex-grow: 1; background-color: rgb(56, 56, 56); border-top-left-radius: 0; border-bottom-left-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 5px;" />
+    <CustomNodeView focusable="true" style="flex-grow: 1;" />
+    <ui:VisualElement name="settingView" style="position: absolute; width: 200px; height: 300px; transform-origin: left bottom; min-width: auto; min-height: auto; background-color: rgba(56, 56, 56, 0); left: 3px; bottom: 3px; display: none;">
+        <ui:Label text="PortSetting" display-tooltip-when-elided="true" class="window-title-center" style="border-bottom-width: 0;" />
+        <ui:VisualElement style="height: 30px; flex-direction: row; align-items: center; justify-content: space-around; padding-left: 0; background-color: rgb(46, 45, 45); border-bottom-width: 1px; border-left-color: rgb(111, 111, 111); border-right-color: rgb(111, 111, 111); border-top-color: rgb(111, 111, 111); border-bottom-color: rgb(111, 111, 111);">
+            <ui:Button text="AddPort" display-tooltip-when-elided="true" name="add" style="flex-direction: row; height: 20px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; width: 45%;" />
+            <ui:Button text="SaveSetting" display-tooltip-when-elided="true" name="save" style="flex-direction: row; height: 20px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; width: 45%;" />
+        </ui:VisualElement>
+        <ui:ScrollView vertical-scroller-visibility="Auto" name="scrollView" style="flex-grow: 1; background-color: rgb(56, 56, 56); border-top-left-radius: 0; border-bottom-left-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 5px; margin-top: 0; margin-left: 0; margin-right: 0; margin-bottom: 0; display: flex;" />
     </ui:VisualElement>
 </ui:UXML>

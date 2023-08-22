@@ -1,14 +1,5 @@
-using System;
-using System.ComponentModel;
-using Unity.Plastic.Antlr3.Runtime.Tree;
 using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.IMGUI.Controls;
-using UnityEditor.Search;
-using UnityEditor.UIElements;
-using UnityEditorInternal.VR;
 using UnityEngine;
 using UnityEngine.UIElements;
 using ObjectField = UnityEditor.UIElements.ObjectField;
@@ -27,10 +18,11 @@ public class BehaviourTreeEditor : EditorWindow
     private ObjectField treeField;
 
     [MenuItem("BehaviourTreeEditor/Open BTEditor")]
-    public static void OpenWindow()
+    public static BehaviourTreeEditor OpenWindow()
     {
         BehaviourTreeEditor wnd = GetWindow<BehaviourTreeEditor>();
         wnd.titleContent = new GUIContent("BehaviourTreeEditor");
+        return wnd;
     }
     public void CreateGUI()
     {
@@ -60,7 +52,16 @@ public class BehaviourTreeEditor : EditorWindow
         inspector = root.Q<VisualElement>("Inspector");
         inspector.style.display = DisplayStyle.None;
     }
+    public void LoadExistentContainer(BTContainer container) 
+    {
+        treeField.value = container;
+        nameTextField.value = container.name;
 
+        saveBtn.SetEnabled(false);
+        loadBtn.SetEnabled(false);
+        nameTextField.SetEnabled(false);
+        treeField.SetEnabled(false);
+    }
     private void OnUnselectAction()
     {
         inspector.style.display = DisplayStyle.None;

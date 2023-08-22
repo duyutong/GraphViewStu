@@ -36,14 +36,34 @@ public abstract class BehaviorTreeBaseNode : Node
         base.OnUnselected();
         onUnselected?.Invoke();
     }
-    public Port GetPortForNode(Node n, Direction portDir,Type type, Port.Capacity capacity = Port.Capacity.Single)
+    public Port GetPortForNode(Node n, Direction portDir, Type type, Port.Capacity capacity = Port.Capacity.Single)
     {
         return n.InstantiatePort(Orientation.Horizontal, portDir, capacity, type);
     }
-    public Port GetPortForNode(SBTNodePort port) 
+    public void AddPortForNode(BTNodePortSetting setting)
     {
-        return port.node.InstantiatePort(Orientation.Horizontal, port.direction, port.capacity, port.portType);
+        BehaviorTreeBaseNode node = this;
+        Type portType = setting.GetTypeByEPortType();
+        Port port = node.InstantiatePort(Orientation.Horizontal, setting.direction, setting.capacity, portType);
+        port.portName = setting.portName;
+
+        if (setting.direction == Direction.Output) node.outputContainer.Add(port);
+        if (setting.direction == Direction.Input) node.inputContainer.Add(port);
+
+        node.RefreshExpandedState();
+        node.RefreshPorts();
     }
+    public void RemovePortFromNode(string name, Direction direction)
+    {
+        BehaviorTreeBaseNode node = this;
+        VisualElement checkContainer = direction == Direction.Output ? outputContainer : inputContainer;
+        Port port = GetPortByName(name, direction);
+        checkContainer.Remove(port);
+
+        node.RefreshExpandedState();
+        node.RefreshPorts();
+    }
+
     public Port GetPortByName(string name, Direction direction)
     {
         VisualElement checkContainer = direction == Direction.Output ? outputContainer : inputContainer;
@@ -58,17 +78,48 @@ public abstract class BehaviorTreeBaseNode : Node
         return null;
     }
 }
-public class BehaviorTreeBaseNode<IBTState>: BehaviorTreeBaseNode
+public class BehaviorTreeBaseNode<IBTState> : BehaviorTreeBaseNode
 {
 
 }
 [Serializable]
-public struct SBTNodePort
+public class BTNodePortSetting
 {
-    public Node node;
+    public BehaviorTreeBaseNode node;
     public string portName;
     public Direction direction;
     public Capacity capacity;
-    public Type portType;
+    public EPortType portType;
+
+    public Type GetTypeByEPortType()
+    {
+        switch (portType)
+        {
+            case EPortType.Boolean: return typeof(bool);
+            case EPortType.Float: return typeof(float);
+            case EPortType.Vector3: return typeof(Vector3);
+            case EPortType.Vector4: return typeof(Vector4);
+            case EPortType.Vector2: return typeof(Vector2);
+            case EPortType.String: return typeof(string);
+        }
+        return typeof(string);
+    }
+}
+[Serializable]
+public enum EPortType
+{
+    Boolean,
+    Vector2,
+    Vector3,
+    Vector4,
+    Float,
+    String,
+}
+[Serializable]
+public enum ENodeType
+{
+    Behavior,
+    Decorator,
+    Trigger,
 }
 

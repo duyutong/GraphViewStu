@@ -14,7 +14,7 @@ public class DebugState : BehaviorTreeBaseState
         {
             if (_stateObj == null)
             {
-                _stateObj = new DebugStateObj();
+                _stateObj = ScriptableObject.CreateInstance<DebugStateObj>();
                 _stateObj.state = state;
                 _stateObj.logStr = logStr;
             }

@@ -20,7 +20,7 @@ public class InputState : BehaviorTreeBaseState
         {
             if (_stateObj == null)
             {
-                _stateObj = new InputStateObj();
+                _stateObj = ScriptableObject.CreateInstance<InputStateObj>();
                 _stateObj.state = state;
                 _stateObj.direction = direction;
                 _stateObj.output = output;

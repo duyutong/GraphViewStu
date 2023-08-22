@@ -12,6 +12,7 @@ public class BehaviorTreeView : GraphView
     public Action<BehaviorTreeBaseNode> onSelectAction;
     public Action onUnselectAction;
     public GameObject selectionTarget;
+
     public new class UxmlFactory : UxmlFactory<BehaviorTreeView, UxmlTraits> { }
     public BehaviorTreeView()
     {
