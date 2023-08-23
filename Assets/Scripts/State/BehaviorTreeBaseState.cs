@@ -15,7 +15,10 @@ public class BehaviorTreeBaseState
     public List<SBTOutputInfo> output = new List<SBTOutputInfo>();
     public List<BehaviorTreeBaseState> lastStates;
     public virtual ScriptableObject stateObj { get; }
-   
+
+    public Action onEnterForRuntime;
+    public Action onExitForRuntime;
+
     public virtual void InitParam(string param) { }
     public virtual void InitValue()
     {
@@ -60,10 +63,10 @@ public class BehaviorTreeBaseState
             foreach (string id in lastStateIds) lastStates.Add(runtime.stateDic[id]);
         }
     }
-    public virtual void OnEnter() { InitValue(); state = EBTState.进入; }
+    public virtual void OnEnter() { InitValue(); state = EBTState.进入; onEnterForRuntime?.Invoke(); }
 
     public virtual void OnExecute() { state = EBTState.执行中; }
-    public virtual void OnExit() { state = EBTState.完成; }
+    public virtual void OnExit() { state = EBTState.完成; onExitForRuntime?.Invoke(); }
     public virtual void OnRefresh() 
     {
         state = EBTState.未开始;

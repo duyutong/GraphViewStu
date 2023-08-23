@@ -13,6 +13,8 @@ public class BehaviorTreeView : GraphView
     public Action onUnselectAction;
     public GameObject selectionTarget;
 
+    private BTRuntimeComponent runtime;
+    private Color oriColor;
     public new class UxmlFactory : UxmlFactory<BehaviorTreeView, UxmlTraits> { }
     public BehaviorTreeView()
     {
@@ -94,6 +96,52 @@ public class BehaviorTreeView : GraphView
 
         AddElement(edge);
     }
+    public void LoadRuntimeData(BTRuntimeComponent _runtime) 
+    {
+        runtime = _runtime;
+        selectionTarget = runtime.gameObject;
+        BTContainer container = runtime.container;
+
+        foreach (NodeData nodeData in container.nodeDatas)
+            LoadRuntimNode(nodeData);
+        foreach (EdgeData edgeData in container.edgeDatas)
+            LoadEdge(edgeData);
+    }
+
+    private void LoadRuntimNode(NodeData nodeData)
+    {
+        Type nodeType = Type.GetType(nodeData.typeName);
+        BehaviorTreeBaseNode node = (BehaviorTreeBaseNode)Activator.CreateInstance(nodeType);
+
+        if (node == null) return;
+
+        BehaviorTreeBaseState btState = runtime.stateDic[nodeData.guid];
+        btState.onEnterForRuntime = () => 
+        {
+            node.style.backgroundColor = Color.green;
+            node.RefreshExpandedState();
+            node.RefreshPorts();
+        };
+        btState.onExitForRuntime = () => 
+        {
+            node.style.backgroundColor = oriColor;
+            node.RefreshExpandedState();
+            node.RefreshPorts();
+        };
+
+        node.onSelectAction = onSelectAction;
+        node.onUnselected = onUnselectAction;
+        node.target = selectionTarget;
+        node.btState = btState;
+        node.guid = nodeData.guid;
+        node.SetPosition(new Rect(nodeData.nodePos, node.GetPosition().size));
+        oriColor = node.style.backgroundColor.value;
+
+        AddElement(node);
+        node.RefreshExpandedState();
+        node.RefreshPorts();
+    }
+
     public void LoadData(BTContainer container)
     {
         foreach (NodeData nodeData in container.nodeDatas)
@@ -114,7 +162,7 @@ public class BehaviorTreeView : GraphView
     }
     private Type GetType(string typeName)
     {
-        string assemblyName = "Assembly-CSharp"; // 您的程序集名称
+        string assemblyName = "Assembly-CSharp"; // 程序集名称
         Type type = null;
         foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
         {

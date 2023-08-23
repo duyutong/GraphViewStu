@@ -16,7 +16,7 @@ public class BTRuntimeComponentEditor : Editor
         {
             // 点击按钮时的操作
             BehaviourTreeEditor editor = BehaviourTreeEditor.OpenWindow();
-            editor.LoadExistentContainer(script.container);
+            editor.LoadRuntimeContainer(script);
         }
     }
 }

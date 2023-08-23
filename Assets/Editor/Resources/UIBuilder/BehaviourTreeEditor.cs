@@ -52,8 +52,10 @@ public class BehaviourTreeEditor : EditorWindow
         inspector = root.Q<VisualElement>("Inspector");
         inspector.style.display = DisplayStyle.None;
     }
-    public void LoadExistentContainer(BTContainer container) 
+    public void LoadRuntimeContainer(BTRuntimeComponent runtime)
     {
+        BTContainer container = runtime.container;
+
         treeField.value = container;
         nameTextField.value = container.name;
 
@@ -61,6 +63,10 @@ public class BehaviourTreeEditor : EditorWindow
         loadBtn.SetEnabled(false);
         nameTextField.SetEnabled(false);
         treeField.SetEnabled(false);
+
+        bool isPlaying = Application.isPlaying;
+        if (isPlaying) behaviorTreeView.LoadRuntimeData(runtime);
+        else behaviorTreeView.LoadData(container);
     }
     private void OnUnselectAction()
     {

@@ -47,7 +47,7 @@ public class ProtSettingView : VisualElement
             {
                 object fieldValue = field.GetValue(sPortInfo);
                 EnumField element = new EnumField(fieldName, fieldValue as Enum);
-                element.value = field.GetValue(info) as Enum;
+                element.value = fieldValue as Enum;
                 element.name = fieldName;
                 element.RegisterValueChangedCallback((_enum) =>
                 {
