@@ -11,7 +11,7 @@ public class CSTemplate
 using System;
 using UnityEngine;
 using UnityEditor.Experimental.GraphView;
-public class #Prefix#_#Title# : #NodeType#Node
+public class #Prefix#_#Title# : #NodeType#
 {
     public override string stateName => ""#Title#State"";
     public #Prefix#_#Title#() : base() 

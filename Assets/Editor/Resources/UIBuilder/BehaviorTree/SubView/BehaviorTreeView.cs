@@ -120,13 +120,11 @@ public class BehaviorTreeView : GraphView
         {
             node.style.backgroundColor = Color.green;
             node.RefreshExpandedState();
-            node.RefreshPorts();
         };
         btState.onExitForRuntime = () => 
         {
             node.style.backgroundColor = oriColor;
             node.RefreshExpandedState();
-            node.RefreshPorts();
         };
 
         node.onSelectAction = onSelectAction;

@@ -23,9 +23,9 @@ public class CustomNodeView : GraphView
         // GraphView允许进行框选
         this.AddManipulator(new RectangleSelector());
     }
-    public void CreatNode(string nodeName,ENodeType nodeType)
+    public void CreatNode(string nodeName,string nodeType)
     {
-        TempNode node = new TempNode();
+        DefaultNode node = new DefaultNode();
         node.title = nodeName;
         node.nodeType = nodeType;
         node.onSelectAction = onSelectAction;

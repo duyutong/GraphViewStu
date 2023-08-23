@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,23 +8,22 @@ using UnityEngine;
 [Serializable]
 public class TestState : BehaviorTreeBaseState
 {
-    public Boolean enter;
-    public Vector3 dir;
-    public Single speed;
+    
+public Boolean p0;
+public Single p2;
 
-    public override ScriptableObject stateObj
+    public override ScriptableObject stateObj 
     {
-        get
+        get 
         {
             if (_stateObj == null)
             {
                 _stateObj = ScriptableObject.CreateInstance<TestStateObj>();
                 _stateObj.state = state;
                 _stateObj.output = output;
-
-                _stateObj.enter = enter;
-                _stateObj.dir = dir;
-                _stateObj.speed = speed;
+                
+_stateObj.p0 = p0;
+_stateObj.p2 = p2;
             }
             return _stateObj;
         }
@@ -35,28 +35,25 @@ public class TestState : BehaviorTreeBaseState
         using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(param)))
         {
             _stateObj = (TestStateObj)jsonSerializer.ReadObject(stream);
-
-            enter = _stateObj.enter;
-            dir = _stateObj.dir;
-            speed = _stateObj.speed;
+            
+p0 = _stateObj.p0;
+p2 = _stateObj.p2;
         }
     }
     public override void Save()
     {
         if (stateObj == null) return;
-
-        enter = _stateObj.enter;
-        dir = _stateObj.dir;
-        speed = _stateObj.speed;
+        
+p0 = _stateObj.p0;
+p2 = _stateObj.p2;
     }
 }
 public class TestStateObj : ScriptableObject
 {
     public EBTState state;
-
-    public Boolean enter;
-    public Vector3 dir;
-    public Single speed;
+    
+public Boolean p0;
+public Single p2;
 
     public List<SBTOutputInfo> output;
 }

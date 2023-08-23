@@ -5,6 +5,9 @@ using UnityEditor.UIElements;
 using System;
 using UnityEditor.Experimental.GraphView;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using GluonGui.WorkspaceWindow.Views.WorkspaceExplorer;
 
 public class CustomNodeEditor : EditorWindow
 {
@@ -15,17 +18,17 @@ public class CustomNodeEditor : EditorWindow
     private CustomNodeView nodeView;
 
     //ToolBar
-    private ENodeType eNodeType = ENodeType.Trigger;
     private TextField nameTextField;
-    private EnumField nodeType;
+    private DropdownField nodeTypeField;
     private Button createBtn;
+    private List<string> nodeTypeList = new List<string>();
 
     //PortSetting
     private VisualElement settingView;
     private ScrollView scrollView;
     private Button addPortBtn;
     private Button savePortBtn;
-    private TempNode currNode;
+    private DefaultNode currNode;
 
     [MenuItem("BehaviourTreeEditor/Open NodeEditor")]
     public static void OpenWindow()
@@ -37,18 +40,36 @@ public class CustomNodeEditor : EditorWindow
     public void CreateGUI()
     {
         VisualElement root = rootVisualElement;
-        visualTreeAsset = Resources.Load<VisualTreeAsset>("UIBuilder/CustomNodeEditor");
+        visualTreeAsset = Resources.Load<VisualTreeAsset>("UIBuilder/BehaviorTree/CustomNodeEditor");
         visualTreeAsset.CloneTree(root);
+        
+        InitNodeTypeList();
 
         nodeView = root.Q<CustomNodeView>();
         nodeView.onSelectAction = OnSelectAction;
         nodeView.onUnselectAction = OnUnselectAction;
 
         nameTextField = root.Q<TextField>("nameTextField");
+        nameTextField.RegisterValueChangedCallback((_value) =>
+        {
+            if (currNode != null)
+            {
+                currNode.title = _value.newValue;
+                currNode.RefreshExpandedState();
+            }
+        });
 
-        nodeType = root.Q<EnumField>("nodeTypeField");
-        nodeType.Init(eNodeType);
-        nodeType.RegisterValueChangedCallback((_enum) => { eNodeType = (ENodeType)_enum.newValue; });
+        nodeTypeField = root.Q<DropdownField>("nodeTypeField");
+        nodeTypeField.choices = nodeTypeList;
+        nodeTypeField.value = nodeTypeList[0];
+        nodeTypeField.RegisterValueChangedCallback((_value) => 
+        {
+            if (currNode != null) 
+            {
+                currNode.nodeType = _value.newValue;
+                currNode.RefreshExpandedState();
+            }
+        });
 
         createBtn = root.Q<Button>("createBtn");
         createBtn.clicked += OnClickCreateBtn;
@@ -61,11 +82,23 @@ public class CustomNodeEditor : EditorWindow
 
         scrollView = root.Q<ScrollView>("scrollView");
         settingView = root.Q<VisualElement>("settingView");
+        settingView.style.display = DisplayStyle.None;
     }
-
+    private void InitNodeTypeList() 
+    {
+        nodeTypeList.Clear();
+        string path = Application.dataPath.Replace("\\", "/") + "/Editor/BehaviorTree/Node/Base";
+        DirectoryInfo directory = Directory.CreateDirectory(path);
+        FileInfo[] fileInfos = directory.GetFiles();
+        foreach (FileInfo info in fileInfos) 
+        {
+            if (info.Extension.ToLower() != ".cs") continue;
+            nodeTypeList.Add(info.Name.Split(".")[0]);
+        }
+    }
     private void OnClickSaveBtn()
     {
-        GraphSaveUtility.GenNodeToCSharp(eNodeType, currNode);
+        GraphSaveUtility.GenNodeToCSharp(currNode);
         GraphSaveUtility.GenStateToCSharp(currNode);
     }
     private void OnClickAddPortBtn()
@@ -80,13 +113,14 @@ public class CustomNodeEditor : EditorWindow
 
     private void OnClickCreateBtn()
     {
+        string nodeType = nodeTypeField.value;
         string nodeName = nameTextField.text;
         if (string.IsNullOrEmpty(nodeName)) return;
-        nodeView.CreatNode(nodeName,eNodeType);
+        nodeView.CreatNode(nodeName, nodeType);
     }
     private void OnSelectAction(BehaviorTreeBaseNode _node) 
     {
-        TempNode node = _node as TempNode;
+        DefaultNode node = _node as DefaultNode;
         currNode = node;
         if (node == null) return;
 

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TriggerNode : BehaviorTreeBaseNode<BehaviorTreeBaseState>
 {
+    public override string Prefix => "Trigger";
     public TriggerNode() : base()
     {
         title = "*TiggerNode";

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class BehaviorNode : BehaviorTreeBaseNode<BehaviorTreeBaseState>
 {
+    public override string Prefix => "Behav";
     public BehaviorNode() : base() 
     {
         title = "*BehaviorNode";

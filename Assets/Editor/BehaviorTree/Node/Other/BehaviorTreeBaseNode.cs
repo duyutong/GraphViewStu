@@ -11,6 +11,7 @@ using static UnityEditor.Experimental.GraphView.Port;
 
 public abstract class BehaviorTreeBaseNode : Node
 {
+    public virtual string Prefix => "Base";
     public virtual string stateName => "DefaultState";
     public Vector2 nodePos;
     public string guid;
@@ -114,12 +115,5 @@ public enum EPortType
     Vector4,
     Float,
     String,
-}
-[Serializable]
-public enum ENodeType
-{
-    Behavior,
-    Decorator,
-    Trigger,
 }
 

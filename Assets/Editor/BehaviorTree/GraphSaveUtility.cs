@@ -11,6 +11,7 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
+using BTBaseNode = BehaviorTreeBaseNode;
 
 public static class GraphSaveUtility
 {
@@ -21,11 +22,11 @@ public static class GraphSaveUtility
         foreach (Edge edge in edges)
         {
             Node outNode = edge.output.node;
-            BehaviorTreeBaseNode outBaseNode = outNode as BehaviorTreeBaseNode;
+            BTBaseNode outBaseNode = outNode as BTBaseNode;
             if (outBaseNode == null) continue;
 
             Node inputNode = edge.input.node;
-            BehaviorTreeBaseNode inputBaseNode = inputNode as BehaviorTreeBaseNode;
+            BTBaseNode inputBaseNode = inputNode as BTBaseNode;
             if (inputBaseNode == null) continue;
 
             EdgeData data = new EdgeData();
@@ -38,7 +39,7 @@ public static class GraphSaveUtility
 
         foreach (Node node in nodes)
         {
-            BehaviorTreeBaseNode baseNode = node as BehaviorTreeBaseNode;
+            BTBaseNode baseNode = node as BTBaseNode;
             if (baseNode == null) continue;
             baseNode.btState.Save();
             NodeData data = new NodeData();
@@ -57,7 +58,7 @@ public static class GraphSaveUtility
                 json = Encoding.UTF8.GetString(stream.ToArray());
             }
             data.lastNodes = new List<string>();
-            foreach (BehaviorTreeBaseNode _node in baseNode.lastNodes) data.lastNodes.Add(_node.guid);
+            foreach (BTBaseNode _node in baseNode.lastNodes) data.lastNodes.Add(_node.guid);
             data.nodeName = baseNode.title;
             data.stateParams = json;
             data.guid = baseNode.guid;
@@ -72,7 +73,7 @@ public static class GraphSaveUtility
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
-    public static void GenStateToCSharp(TempNode node) 
+    public static void GenStateToCSharp(DefaultNode node) 
     {
         string tempStr = CSTemplate.stateStr;
 
@@ -119,12 +120,12 @@ public static class GraphSaveUtility
         AssetDatabase.Refresh();
         Debug.Log("状态脚本生成完毕 " + className);
     }
-    public static void GenNodeToCSharp(ENodeType type, TempNode node)
+    public static void GenNodeToCSharp(DefaultNode node)
     {
+        string nodeType = node.nodeType;
+        BTBaseNode baseNode = Activator.CreateInstance(Type.GetType(nodeType)) as BTBaseNode;
         string tempStr = CSTemplate.nodeStr;
-
-        string prefix = GetPrefix(type);
-        string nodeType = Enum.GetName(typeof(ENodeType), type);
+        string prefix = baseNode.Prefix;
         string title = node.title;
 
         string className = $"{prefix}_{title}";
@@ -173,19 +174,5 @@ public static class GraphSaveUtility
 
         AssetDatabase.Refresh();
         Debug.Log("节点脚本生成完毕 " + className);
-    }
-    private static string GetPrefix(ENodeType type)
-    {
-        switch (type)
-        {
-            case ENodeType.Trigger:
-                return "Trigger";
-            case ENodeType.Decorator:
-                return "Deco";
-            case ENodeType.Behavior:
-                return "Behav";
-
-        }
-        return "";
     }
 }

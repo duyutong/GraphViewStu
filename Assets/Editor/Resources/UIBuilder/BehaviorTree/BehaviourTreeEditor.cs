@@ -28,7 +28,7 @@ public class BehaviourTreeEditor : EditorWindow
     {
         // Each editor window contains a root VisualElement object
         VisualElement root = rootVisualElement;
-        visualTreeAsset = Resources.Load<VisualTreeAsset>("UIBuilder/BehaviourTreeEditor");
+        visualTreeAsset = Resources.Load<VisualTreeAsset>("UIBuilder/BehaviorTree/BehaviourTreeEditor");
         visualTreeAsset.CloneTree(root);
 
         inspectorView = root.Q<InspectorView>();

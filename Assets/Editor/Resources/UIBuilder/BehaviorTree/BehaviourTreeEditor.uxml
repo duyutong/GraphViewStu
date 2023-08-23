@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/Editor/Resources/UIBuilder/BehaviourTreeEditor.uss?fileID=7433441132597879392&amp;guid=888b11796aac8c642a01a5894ca99601&amp;type=3#BehaviourTreeEditor" />
+    <Style src="project://database/Assets/Editor/Resources/UIBuilder/BehaviorTree/BehaviourTreeEditor.uss?fileID=7433441132597879392&amp;guid=888b11796aac8c642a01a5894ca99601&amp;type=3#BehaviourTreeEditor" />
     <GridBackView focusable="true" style="flex-grow: 1; min-width: auto; min-height: auto; position: absolute; width: 100%; height: 100%;">
         <ui:Label text="BTEditor" display-tooltip-when-elided="true" class="window-title" />
     </GridBackView>
@@ -15,9 +15,11 @@
         <ui:VisualElement name="BTEditor" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: column; width: 100%; height: 100%; position: relative; min-width: auto; min-height: auto;">
             <BehaviorTreeView focusable="true" style="flex-grow: 1; display: flex; width: 100%; height: 100%; min-width: 0; min-height: 0;" />
         </ui:VisualElement>
-        <ui:VisualElement name="Inspector" style="position: absolute; width: 320px; height: 300px; top: 50px; right: 3px; min-width: auto; min-height: auto; display: flex;">
-            <ui:Label text="Inspector" display-tooltip-when-elided="true" class="window-title" style="margin-left: 0; width: 80px; -unity-text-align: middle-center; height: auto; border-top-left-radius: 10px; border-top-right-radius: 10px;" />
-            <InspectorView style="background-color: rgb(56, 56, 56); flex-grow: 1; padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; border-top-right-radius: 10px;" />
+        <ui:VisualElement name="Inspector" style="position: absolute; width: 300px; height: 200px; top: 50px; right: 3px; min-width: auto; min-height: auto; display: flex;">
+            <ui:Label text="Inspector" display-tooltip-when-elided="true" class="window-title" style="margin-left: 0; width: 80px; -unity-text-align: middle-center; height: auto; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: rgb(46, 46, 46); border-top-color: rgb(219, 219, 219); border-right-color: rgb(219, 219, 219); border-left-color: rgb(219, 219, 219); border-bottom-color: rgb(219, 219, 219); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; max-height: none; min-height: auto;" />
+            <ui:ScrollView mode="VerticalAndHorizontal" style="width: auto; height: auto; position: relative; align-items: stretch; top: auto; right: auto; flex-grow: 1; background-color: rgb(56, 56, 56); padding-left: 10px; padding-right: 10px; padding-top: 1px; padding-bottom: 1px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;">
+                <InspectorView class="unity-label" style="width: 400px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-left-color: rgb(226, 226, 226); border-right-color: rgb(226, 226, 226); border-top-color: rgb(226, 226, 226); border-bottom-color: rgb(226, 226, 226); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; background-color: rgba(0, 0, 0, 0); flex-shrink: 0;" />
+            </ui:ScrollView>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
