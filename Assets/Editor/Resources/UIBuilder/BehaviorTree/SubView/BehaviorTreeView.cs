@@ -39,6 +39,7 @@ public class BehaviorTreeView : GraphView
         };
         // 将自定义的GraphViewChanged事件处理程序添加到GraphView事件中
         graphViewChanged += OnGraphViewChanged;
+        
     }
     private bool CreatNode(Type type, Vector2 pos = default)
     {
