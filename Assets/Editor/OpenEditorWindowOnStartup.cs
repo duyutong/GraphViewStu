@@ -7,7 +7,8 @@ public class OpenEditorWindowOnStartup
     static OpenEditorWindowOnStartup()
     {
         // 注册Unity编辑器启动时的回调
-        EditorApplication.delayCall += OpenWindow;
+        //太烦了，关掉
+        //EditorApplication.delayCall += OpenWindow;
     }
 
     static void OpenWindow()

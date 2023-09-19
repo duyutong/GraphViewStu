@@ -1,25 +1,27 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Networking.Types;
 using BTState = BehaviorTreeBaseState;
+
 public class BTRuntimeComponent : MonoBehaviour
 {
     public BTContainer container;
     public Dictionary<string, BTState> stateDic = new Dictionary<string, BTState>();
     public Dictionary<string, List<string>> lastStateDic = new Dictionary<string, List<string>>();
     private bool isInitFinish;
+
     private void Awake()
     {
         isInitFinish = false;
         LoadStates();
     }
 
+    /// <summary>
+    /// 加载行为树状态
+    /// </summary>
     private void LoadStates()
     {
-        foreach (NodeData nodeData in container.nodeDatas) 
+        foreach (NodeData nodeData in container.nodeDatas)
         {
             Type stateType = Type.GetType(nodeData.stateName);
             BTState btState = (BTState)Activator.CreateInstance(stateType);
@@ -30,14 +32,20 @@ public class BTRuntimeComponent : MonoBehaviour
             stateDic.Add(nodeData.guid, btState);
             lastStateDic.Add(nodeData.guid, nodeData.lastNodes);
         }
-        foreach (KeyValuePair<string, BTState> keyValuePair in stateDic) 
+        foreach (KeyValuePair<string, BTState> keyValuePair in stateDic)
         {
             BTState state = keyValuePair.Value;
             state.OnInitFinish();
         }
         isInitFinish = true;
     }
-    public void SetStateValue(Action<BTState> action,Func<BTState,bool> func) 
+
+    /// <summary>
+    /// 设置行为树状态值
+    /// </summary>
+    /// <param name="action">要执行的动作</param>
+    /// <param name="func">要应用的条件</param>
+    public void SetStateValue(Action<BTState> action, Func<BTState, bool> func)
     {
         foreach (KeyValuePair<string, BTState> keyValuePair in stateDic)
         {
@@ -46,17 +54,11 @@ public class BTRuntimeComponent : MonoBehaviour
             action(state);
         }
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
         if (!isInitFinish) return;
-        foreach (KeyValuePair<string, BTState> keyValuePair in stateDic) 
+        foreach (KeyValuePair<string, BTState> keyValuePair in stateDic)
         {
             string nodeId = keyValuePair.Key;
             BTState checkState = keyValuePair.Value;
@@ -74,7 +76,7 @@ public class BTRuntimeComponent : MonoBehaviour
                     if (checkCount == 0) checkState.OnEnter();
                 }
             }
-            else if (checkState.state == EBTState.执行中) 
+            else if (checkState.state == EBTState.执行中)
             {
                 checkState.OnUpdate();
             }

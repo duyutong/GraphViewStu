@@ -24,7 +24,7 @@ public class DebugState : BehaviorTreeBaseState
     private DebugStateObj _stateObj;
     public override void InitParam(string param)
     {
-        DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(DebugStateObj));
+       DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(DebugStateObj));
         using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(param)))
         {
             _stateObj = (DebugStateObj)jsonSerializer.ReadObject(stream);

@@ -10,11 +10,11 @@ public class Trigger_Input : TriggerNode
     public Trigger_Input() : base() 
     {
         title = "Input";
-        Port oPort = GetPortForNode(this, Direction.Output, typeof(Vector2), Port.Capacity.Single);
+        Port oPort = CreatePortForNode(this, Direction.Output, typeof(Vector2), Port.Capacity.Single);
         oPort.portName = "result";
         outputContainer.Add(oPort);
 
-        Port ePort = GetPortForNode(this, Direction.Input, typeof(bool), Port.Capacity.Single);
+        Port ePort = CreatePortForNode(this, Direction.Input, typeof(bool), Port.Capacity.Single);
         ePort.portName = "enter";
         inputContainer.Add(ePort);
     }

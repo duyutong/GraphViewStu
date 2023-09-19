@@ -1,8 +1,5 @@
-using Palmmedia.ReportGenerator.Core.Common;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization.Json;
@@ -12,13 +9,15 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 using BTBaseNode = BehaviorTreeBaseNode;
+using Unity.Plastic.Newtonsoft.Json;
+using Edge = UnityEditor.Experimental.GraphView.Edge;
 
 public static class GraphSaveUtility
 {
     public static void SaveData(string fileName, UQueryState<Node> nodes, UQueryState<Edge> edges)
     {
         BTContainer container = ScriptableObject.CreateInstance<BTContainer>();
-
+        //对连线的处理
         foreach (Edge edge in edges)
         {
             Node outNode = edge.output.node;
@@ -36,7 +35,7 @@ public static class GraphSaveUtility
             data.intputPortName = edge.input.portName;
             container.edgeDatas.Add(data);
         }
-
+        //对节点的处理
         foreach (Node node in nodes)
         {
             BTBaseNode baseNode = node as BTBaseNode;
@@ -175,4 +174,101 @@ public static class GraphSaveUtility
         AssetDatabase.Refresh();
         Debug.Log("节点脚本生成完毕 " + className);
     }
+
+    #region 复制粘贴功能
+    public static string SerializeGraphElements(IEnumerable<GraphElement> elements) 
+    {
+        BTContainer_Copy container = new BTContainer_Copy();
+
+        List<Node> nodes = new List<Node>();
+        List<Edge> edges = new List<Edge>();
+
+        List<string> existentNodes = new List<string>();
+        foreach (GraphElement element in elements)
+        {
+            Node node = element as Node;
+            Edge edge = element as Edge;
+            if (node != null) nodes.Add(node);
+            if (edge != null) edges.Add(edge);
+        }
+        //对节点的处理
+        foreach (Node node in nodes)
+        {
+            BTBaseNode baseNode = node as BTBaseNode;
+            if (baseNode == null) continue;
+            baseNode.btState.Save();
+            NodeData data = new NodeData();
+            Dictionary<string, object> _variableValues = new Dictionary<string, object>();
+            FieldInfo[] fields = baseNode.btState.GetType().GetFields();
+            foreach (FieldInfo field in fields)
+            {
+                object value = field.GetValue(baseNode.btState);
+                _variableValues.Add(field.Name, value);
+            }
+            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(baseNode.btState.stateObj.GetType());
+            string json = "";
+            using (MemoryStream stream = new System.IO.MemoryStream())
+            {
+                jsonSerializer.WriteObject(stream, baseNode.btState.stateObj);
+                json = Encoding.UTF8.GetString(stream.ToArray());
+            }
+            data.lastNodes = new List<string>();
+            foreach (BTBaseNode _node in baseNode.lastNodes) data.lastNodes.Add(_node.guid);
+            data.nodeName = baseNode.title;
+            data.stateParams = json;
+            data.guid = baseNode.guid;
+            data.nodePos = baseNode.GetPosition().position;
+            data.typeName = baseNode.GetType().FullName;
+            data.output = baseNode.btState.output;
+            data.stateName = baseNode.stateName;
+
+            existentNodes.Add(baseNode.guid);
+            container.nodeDatas.Add(data);
+        }
+        foreach (Edge edge in edges)
+        {
+            Node outNode = edge.output.node;
+            BTBaseNode outBaseNode = outNode as BTBaseNode;
+            if (outBaseNode == null) continue;
+            if (!existentNodes.Contains(outBaseNode.guid)) continue;
+
+            Node inputNode = edge.input.node;
+            BTBaseNode inputBaseNode = inputNode as BTBaseNode;
+            if (inputBaseNode == null) continue;
+            if (!existentNodes.Contains(inputBaseNode.guid)) continue;
+
+            EdgeData data = new EdgeData();
+            data.outPortNode = outBaseNode.guid;
+            data.outPortName = edge.output.portName;
+            data.intputPortNode = inputBaseNode.guid;
+            data.intputPortName = edge.input.portName;
+            container.edgeDatas.Add(data);
+        }
+        return SerializeObject(container);
+    }
+    // 将对象序列化为 JSON 字符串
+    public static string SerializeObject(object obj)
+    {
+        DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(obj.GetType());
+        string json = "";
+        using (MemoryStream stream = new MemoryStream())
+        {
+            jsonSerializer.WriteObject(stream, obj);
+            json = Encoding.UTF8.GetString(stream.ToArray());
+        }
+        return json;
+    }
+
+    // 将 JSON 字符串反序列化为对象
+    public static T DeserializeObject<T>(string json)
+    {
+        return JsonConvert.DeserializeObject<T>(json);
+    }
+    #endregion
+}
+[Serializable]
+public class CustomNodeData 
+{
+    public NodeData nodeData;
+    public List<BTNodePortSetting> portSettings;
 }

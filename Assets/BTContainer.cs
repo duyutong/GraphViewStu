@@ -13,6 +13,14 @@ public class BTContainer : ScriptableObject
     public List<EdgeData>edgeDatas = new List<EdgeData>();
 }
 [Serializable]
+public class BTContainer_Copy
+{
+    [HideInInspector]
+    public List<NodeData> nodeDatas = new List<NodeData>();
+    [HideInInspector]
+    public List<EdgeData> edgeDatas = new List<EdgeData>();
+}
+[Serializable]
 public class NodeData 
 {
     public string nodeName;
