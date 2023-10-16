@@ -1,4 +1,4 @@
-using UnityEditor;
+ï»¿using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
@@ -125,7 +125,7 @@ public class CustomNodeEditor : EditorWindow
         if (node == null) return;
 
         scrollView.contentContainer.Clear();
-        //±éÀúnodeµÄËùÓĞ½Ó¿Ú
+        //éå†nodeçš„æ‰€æœ‰æ¥å£
         List<Port> ports = node.inputContainer.Query<Port>().ToList();
         ports.AddRange(node.outputContainer.Query<Port>().ToList());
 

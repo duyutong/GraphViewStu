@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -14,10 +14,16 @@ using Edge = UnityEditor.Experimental.GraphView.Edge;
 
 public static class GraphSaveUtility
 {
+    /// <summary>
+    /// 保存节点和连线数据到ScriptableObject，并将其存储在指定文件路径
+    /// </summary>
+    /// <param name="fileName">要保存的文件名</param>
+    /// <param name="nodes">要保存的节点</param>
+    /// <param name="edges">要保存的连线</param>
     public static void SaveData(string fileName, UQueryState<Node> nodes, UQueryState<Edge> edges)
     {
         BTContainer container = ScriptableObject.CreateInstance<BTContainer>();
-        //�����ߵĴ���
+
         foreach (Edge edge in edges)
         {
             Node outNode = edge.output.node;
@@ -35,7 +41,7 @@ public static class GraphSaveUtility
             data.intputPortName = edge.input.portName;
             container.edgeDatas.Add(data);
         }
-        //�Խڵ�Ĵ���
+
         foreach (Node node in nodes)
         {
             BTBaseNode baseNode = node as BTBaseNode;
@@ -72,7 +78,13 @@ public static class GraphSaveUtility
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
-    public static void GenStateToCSharp(DefaultNode node) 
+    #region 自定义节点生成
+
+    /// <summary>
+    /// 生成节点对应状态的C#脚本
+    /// </summary>
+    /// <param name="node">节点</param>
+    public static void GenStateToCSharp(DefaultNode node)
     {
         string tempStr = CSTemplate.stateStr;
 
@@ -85,7 +97,7 @@ public static class GraphSaveUtility
         string iStr2 = "";
         string iStr3 = "";
         List<Port> iPorts = node.inputContainer.Query<Port>().ToList();
-        foreach (Port port in iPorts) 
+        foreach (Port port in iPorts)
         {
             string iStrTemp1 = CSTemplate.initPropStr1;
             iStrTemp1 = iStrTemp1.Replace("#PortName#", port.portName);
@@ -104,7 +116,7 @@ public static class GraphSaveUtility
         tempStr = tempStr.Replace("#SetPropValue#", iStr2);
         tempStr = tempStr.Replace("#SetObjPropValue#", iStr3);
 
-        //д���ļ�
+        //写入文件
         string csSavePath = Application.dataPath.Replace("\\", "/") + "/Scripts/State/" + className + ".cs";
         FileInfo saveInfo = new FileInfo(csSavePath);
         DirectoryInfo dir = saveInfo.Directory;
@@ -117,8 +129,13 @@ public static class GraphSaveUtility
         fileStream.Close();
 
         AssetDatabase.Refresh();
-        Debug.Log("״̬�ű�������� " + className);
+        Debug.Log("状态脚本生成完毕 " + className);
     }
+
+    /// <summary>
+    /// 生成节点对应的C#脚本
+    /// </summary>
+    /// <param name="node">要生成C#脚本的节点</param>
     public static void GenNodeToCSharp(DefaultNode node)
     {
         string nodeType = node.nodeType;
@@ -159,7 +176,7 @@ public static class GraphSaveUtility
         tempStr = tempStr.Replace("#InputContainer#", iStr);
         tempStr = tempStr.Replace("#OutputContainer#", oStr);
 
-        //д���ļ�
+        //写入文件
         string csSavePath = Application.dataPath.Replace("\\", "/") + "/Editor/BehaviorTree/Node/" + className + ".cs";
         FileInfo saveInfo = new FileInfo(csSavePath);
         DirectoryInfo dir = saveInfo.Directory;
@@ -172,11 +189,18 @@ public static class GraphSaveUtility
         fileStream.Close();
 
         AssetDatabase.Refresh();
-        Debug.Log("�ڵ�ű�������� " + className);
+        Debug.Log("节点脚本生成完毕 " + className);
     }
+    #endregion
 
-    #region ����ճ������
-    public static string SerializeGraphElements(IEnumerable<GraphElement> elements) 
+    #region 复制粘贴功能
+
+    /// <summary>
+    /// 将图形元素序列化为JSON字符串
+    /// </summary>
+    /// <param name="elements">要序列化的图形元素</param>
+    /// <returns>序列化后的JSON字符串</returns>
+    public static string SerializeGraphElements(IEnumerable<GraphElement> elements)
     {
         BTContainer_Copy container = new BTContainer_Copy();
 
@@ -191,9 +215,9 @@ public static class GraphSaveUtility
             if (node != null) nodes.Add(node);
             if (edge != null) edges.Add(edge);
         }
-        //�Խڵ�Ĵ���
+
         foreach (Node node in nodes)
-        {
+        {     
             BTBaseNode baseNode = node as BTBaseNode;
             if (baseNode == null) continue;
             baseNode.btState.Save();
@@ -246,7 +270,12 @@ public static class GraphSaveUtility
         }
         return SerializeObject(container);
     }
-    // ���������л�Ϊ JSON �ַ���
+
+    /// <summary>
+    /// 将对象序列化为 JSON 字符串
+    /// </summary>
+    /// <param name="obj">要序列化的对象</param>
+    /// <returns>序列化后的JSON字符串</returns>
     public static string SerializeObject(object obj)
     {
         DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(obj.GetType());
@@ -259,15 +288,22 @@ public static class GraphSaveUtility
         return json;
     }
 
-    // �� JSON �ַ��������л�Ϊ����
+    /// <summary>
+    /// 将 JSON 字符串反序列化为对象
+    /// </summary>
+    /// <typeparam name="T">要反序列化的对象类型</typeparam>
+    /// <param name="json">要反序列化的JSON字符串</param>
+    /// <returns>反序列化后的对象</returns>
     public static T DeserializeObject<T>(string json)
     {
         return JsonConvert.DeserializeObject<T>(json);
     }
+
     #endregion
 }
+
 [Serializable]
-public class CustomNodeData 
+public class CustomNodeData
 {
     public NodeData nodeData;
     public List<BTNodePortSetting> portSettings;

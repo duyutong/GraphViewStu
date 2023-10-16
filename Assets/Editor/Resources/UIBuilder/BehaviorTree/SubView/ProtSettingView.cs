@@ -1,4 +1,4 @@
-using Codice.CM.Common;
+ï»¿using Codice.CM.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -62,13 +62,15 @@ public class ProtSettingView : VisualElement
         buttonGroup.style.flexDirection = FlexDirection.Row;
         buttonGroup.style.height = 20;
 
+        foreach (VisualElement element in customVEList) element.SetEnabled(showAdd);
+
         if (showAdd)
         {
             addBtn = new Button(OnClickAddBtn);
             addBtn.text = "+";
             buttonGroup.Add(addBtn);
         }
-
+       
         subBtn = new Button(OnClickSubBtn);
         subBtn.text = "-";
         buttonGroup.Add(subBtn);
@@ -78,7 +80,7 @@ public class ProtSettingView : VisualElement
     private bool CheckInput()
     {
         bool result = true;
-        //¼ì²éÊÇ·ñÓĞ×Ö·ûÀàĞÍµÄ²ÎÊıÃ»Ìî
+        //æ£€æŸ¥æ˜¯å¦æœ‰å­—ç¬¦ç±»å‹çš„å‚æ•°æ²¡å¡«
         foreach (VisualElement element in customVEList)
         {
             TextField textField = element as TextField;

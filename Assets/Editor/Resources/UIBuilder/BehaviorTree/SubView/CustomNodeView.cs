@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -8,57 +8,57 @@ using UnityEngine.UIElements;
 public class CustomNodeView : GraphView
 {
     /// <summary>
-    /// µ±Ñ¡ÔñĞĞÎªÊ÷½ÚµãÊ±´¥·¢µÄÊÂ¼ş
+    /// å½“é€‰æ‹©è¡Œä¸ºæ ‘èŠ‚ç‚¹æ—¶è§¦å‘çš„äº‹ä»¶
     /// </summary>
     public Action<BehaviorTreeBaseNode> onSelectAction;
 
     /// <summary>
-    /// µ±È¡ÏûÑ¡ÔñĞĞÎªÊ÷½ÚµãÊ±´¥·¢µÄÊÂ¼ş
+    /// å½“å–æ¶ˆé€‰æ‹©è¡Œä¸ºæ ‘èŠ‚ç‚¹æ—¶è§¦å‘çš„äº‹ä»¶
     /// </summary>
     public Action onUnselectAction;
 
     /// <summary>
-    /// ¼ôÌù°å
+    /// å‰ªè´´æ¿
     /// </summary>
     public string clipboard;
 
     /// <summary>
-    /// µ±Ç°Ñ¡ÖĞµÄ½Úµã
+    /// å½“å‰é€‰ä¸­çš„èŠ‚ç‚¹
     /// </summary>
     private DefaultNode selectionNode = null;
 
     /// <summary>
-    /// »ñÈ¡ÊÇ·ñ¿ÉÒÔÕ³ÌùÄÚÈİ
+    /// è·å–æ˜¯å¦å¯ä»¥ç²˜è´´å†…å®¹
     /// </summary>
     protected override bool canPaste => !string.IsNullOrEmpty(clipboard);
 
     /// <summary>
-    /// UXML¹¤³§Àà£¬ÓÃÓÚ´´½¨ CustomNodeView ÊµÀı
+    /// UXMLå·¥å‚ç±»ï¼Œç”¨äºåˆ›å»º CustomNodeView å®ä¾‹
     /// </summary>
     public new class UxmlFactory : UxmlFactory<CustomNodeView, UxmlTraits> { }
 
     /// <summary>
-    /// ¹¹Ôìº¯Êı£¬ÓÃÓÚ³õÊ¼»¯ CustomNodeView ÊµÀı
+    /// æ„é€ å‡½æ•°ï¼Œç”¨äºåˆå§‹åŒ– CustomNodeView å®ä¾‹
     /// </summary>
     public CustomNodeView()
     {
-        // ÔÊĞí¶ÔGraph½øĞĞZoom in/out
+        // å…è®¸å¯¹Graphè¿›è¡ŒZoom in/out
         SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
-        // ÔÊĞíÍÏ×§Content
+        // å…è®¸æ‹–æ‹½Content
         this.AddManipulator(new ContentDragger());
-        // ÔÊĞíÍÏ×§SelectionÀïµÄÄÚÈİ
+        // å…è®¸æ‹–æ‹½Selectioné‡Œçš„å†…å®¹
         this.AddManipulator(new SelectionDragger());
-        // GraphViewÔÊĞí½øĞĞ¿òÑ¡
+        // GraphViewå…è®¸è¿›è¡Œæ¡†é€‰
         this.AddManipulator(new RectangleSelector());
 
         clipboard = null;
     }
 
     /// <summary>
-    /// ´´½¨½Úµã
+    /// åˆ›å»ºèŠ‚ç‚¹
     /// </summary>
-    /// <param name="nodeName">½ÚµãÃû³Æ</param>
-    /// <param name="nodeType">½ÚµãÀàĞÍ</param>
+    /// <param name="nodeName">èŠ‚ç‚¹åç§°</param>
+    /// <param name="nodeType">èŠ‚ç‚¹ç±»å‹</param>
     public void CreatNode(string nodeName, string nodeType)
     {
         DefaultNode node = new DefaultNode();
@@ -75,9 +75,9 @@ public class CustomNodeView : GraphView
     }
 
     /// <summary>
-    /// ¹¹½¨ÉÏÏÂÎÄ²Ëµ¥
+    /// æ„å»ºèœå•
     /// </summary>
-    /// <param name="evt">ÉÏÏÂÎÄ²Ëµ¥ÊÂ¼ş</param>
+    /// <param name="evt">èœå•äº‹ä»¶</param>
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
         if (evt.target is DefaultNode)
@@ -104,9 +104,9 @@ public class CustomNodeView : GraphView
     }
 
     /// <summary>
-    /// ¸´ÖÆÑ¡ÖĞµÄ½Úµã
+    /// å¤åˆ¶é€‰ä¸­çš„èŠ‚ç‚¹
     /// </summary>
-    /// <param name="node">Òª¸´ÖÆµÄ½Úµã</param>
+    /// <param name="node">è¦å¤åˆ¶çš„èŠ‚ç‚¹</param>
     private void CopySelectionCallback(DefaultNode node)
     {
         CustomNodeData customNodeData = new CustomNodeData();
@@ -135,9 +135,9 @@ public class CustomNodeView : GraphView
     }
 
     /// <summary>
-    /// ¼ôÇĞÑ¡ÖĞµÄ½Úµã
+    /// å‰ªåˆ‡é€‰ä¸­çš„èŠ‚ç‚¹
     /// </summary>
-    /// <param name="action">ÏÂÀ­²Ëµ¥¶¯×÷</param>
+    /// <param name="action">ä¸‹æ‹‰èœå•åŠ¨ä½œ</param>
     private void CutSelectionCallback(DropdownMenuAction action)
     {
         CopySelectionCallback(selectionNode);
@@ -145,7 +145,7 @@ public class CustomNodeView : GraphView
     }
 
     /// <summary>
-    /// Õ³Ìù½Úµã
+    /// ç²˜è´´èŠ‚ç‚¹
     /// </summary>
     private void OnPasteCallback()
     {
