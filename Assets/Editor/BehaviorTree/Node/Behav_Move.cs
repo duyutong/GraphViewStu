@@ -20,7 +20,6 @@ public class Behav_Move : BehaviorNode
         dirPort.portName = "direction";
         inputContainer.Add(dirPort);
 
-
         Port tPort = CreatePortForNode(this, Direction.Output, typeof(Vector3), Port.Capacity.Multi);
         tPort.portName = "targetPos";
         outputContainer.Add(tPort);

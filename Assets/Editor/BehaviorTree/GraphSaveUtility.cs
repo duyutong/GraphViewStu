@@ -74,7 +74,7 @@ public static class GraphSaveUtility
             container.nodeDatas.Add(data);
         }
 
-        AssetDatabase.CreateAsset(container, $"Assets/Resources/{fileName}.asset");
+        AssetDatabase.CreateAsset(container, $"Assets/BT/{fileName}.asset");
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
@@ -93,28 +93,32 @@ public static class GraphSaveUtility
 
         tempStr = tempStr.Replace("#StateName#", stateName);
 
-        string iStr1 = "";
-        string iStr2 = "";
-        string iStr3 = "";
+        string str1 = "";
+        string str2 = "";
+        string str3 = "";
+        List<Port> oPorts = node.outputContainer.Query<Port>().ToList();
         List<Port> iPorts = node.inputContainer.Query<Port>().ToList();
-        foreach (Port port in iPorts)
+        List<Port> ports = new List<Port>();
+        ports.AddRange(oPorts);
+        ports.AddRange(iPorts);
+        foreach (Port port in ports)
         {
-            string iStrTemp1 = CSTemplate.initPropStr1;
-            iStrTemp1 = iStrTemp1.Replace("#PortName#", port.portName);
-            iStrTemp1 = iStrTemp1.Replace("#PortType#", port.portType.Name);
-            iStr1 += iStrTemp1;
+            string oStrTemp1 = CSTemplate.initPropStr1;
+            oStrTemp1 = oStrTemp1.Replace("#PortName#", port.portName);
+            oStrTemp1 = oStrTemp1.Replace("#PortType#", port.portType.Name);
+            str1 += oStrTemp1;
 
-            string iStrTemp2 = CSTemplate.initPropStr2;
-            iStrTemp2 = iStrTemp2.Replace("#PortName#", port.portName);
-            iStr2 += iStrTemp2;
+            string oStrTemp2 = CSTemplate.initPropStr2;
+            oStrTemp2 = oStrTemp2.Replace("#PortName#", port.portName);
+            str2 += oStrTemp2;
 
-            string iStrTemp3 = CSTemplate.initPropStr3;
-            iStrTemp3 = iStrTemp3.Replace("#PortName#", port.portName);
-            iStr3 += iStrTemp3;
+            string oStrTemp3 = CSTemplate.initPropStr3;
+            oStrTemp3 = oStrTemp3.Replace("#PortName#", port.portName);
+            str3 += oStrTemp3;
         }
-        tempStr = tempStr.Replace("#PublicProperty#", iStr1);
-        tempStr = tempStr.Replace("#SetPropValue#", iStr2);
-        tempStr = tempStr.Replace("#SetObjPropValue#", iStr3);
+        tempStr = tempStr.Replace("#PublicProperty#", str1);
+        tempStr = tempStr.Replace("#SetPropValue#", str2);
+        tempStr = tempStr.Replace("#SetObjPropValue#", str3);
 
         //写入文件
         string csSavePath = Application.dataPath.Replace("\\", "/") + "/Scripts/State/" + className + ".cs";

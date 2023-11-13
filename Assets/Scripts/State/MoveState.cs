@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
@@ -12,7 +12,7 @@ public class MoveState : BehaviorTreeBaseState
     public float moveTime;
 
     private float _timeCount;
-    public override ScriptableObject stateObj
+    public override BTStateObject stateObj 
     {
         get
         {
@@ -39,6 +39,8 @@ public class MoveState : BehaviorTreeBaseState
             speed = _stateObj.speed;
             output = _stateObj.output;
             moveTime = _stateObj.moveTime;
+            interruptible = _stateObj.interruptible;
+            interruptTag = _stateObj.interruptTag;
         }
     }
     public override void Save()
@@ -46,6 +48,8 @@ public class MoveState : BehaviorTreeBaseState
         if (stateObj == null) return;
         direction = _stateObj.direction;
         speed = _stateObj.speed;
+        interruptible = _stateObj.interruptible;
+        interruptTag = _stateObj.interruptTag;
     }
     public override void OnEnter()
     {
@@ -53,11 +57,15 @@ public class MoveState : BehaviorTreeBaseState
         _timeCount = moveTime;
         OnExecute();
     }
-
+    public override void OnInterrupt() 
+    {
+        base.OnInterrupt();
+        OnExit();
+    }
     public override void OnUpdate()
     {
         if (runtime == null) return;
-        if (state != EBTState.Ö´ÐÐÖÐ) return;
+        if (state != EBTState.æ‰§è¡Œä¸­) return;
 
         if (_timeCount <= 0)
         {
@@ -71,12 +79,12 @@ public class MoveState : BehaviorTreeBaseState
         }
     }
 }
-public class MoveStateObj : ScriptableObject
+public class MoveStateObj : BTStateObject
 {
     public EBTState state;
     public Vector2 direction;
     public float speed;
     public float moveTime;
-    public List<SBTOutputInfo> output;
+    public List<BTOutputInfo> output;
 }
 

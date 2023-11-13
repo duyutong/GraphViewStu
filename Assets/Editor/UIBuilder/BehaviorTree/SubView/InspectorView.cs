@@ -1,10 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEditor;
-using UnityEditor.UIElements;
-using UnityEngine;
+锘縰sing UnityEditor;
 using UnityEngine.UIElements;
 
 public class InspectorView : VisualElement
@@ -20,7 +14,7 @@ public class InspectorView : VisualElement
         IMGUIContainer container = new IMGUIContainer(() =>
         {
             if (node == null || node.btState == null) return;
-            //Debug.Log($"在Inspector中显示{node.title}内容");
+            //Debug.Log($"鍦↖nspector涓樉绀簕node.title}鍐呭");
             editor.OnInspectorGUI();
         });
         Add(container);

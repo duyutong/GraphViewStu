@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+锘縰sing UnityEditor;
 using UnityEditor.Experimental.GraphView;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 public class GridBackView : GraphView
@@ -10,8 +8,8 @@ public class GridBackView : GraphView
     public GridBackView() 
     {
         Insert(0, new GridBackground());
-        //添加背景网格样式
-        StyleSheet styleSheet = Resources.Load<StyleSheet>("UIBuilder/BehaviorTree/BehaviourTreeEditor");
+        //娣诲姞鑳屾櫙缃戞牸鏍峰紡
+        StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Editor/UIBuilder/BehaviorTree/BehaviourTreeEditor.uss");
         styleSheets.Add(styleSheet);
     }
 }

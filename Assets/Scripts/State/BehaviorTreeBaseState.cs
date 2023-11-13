@@ -1,30 +1,31 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEngine;
 
 [Serializable]
 public class BehaviorTreeBaseState
 {
-    public EBTState state = EBTState.Î´¿ªÊ¼;
+    public EBTState state = EBTState.æœªå¼€å§‹;
     public string stateName = "*BehaviorTreeBaseState";
     public string nodeId;
+    public bool interruptible = false;
+    public string interruptTag = "";
     public BTRuntimeComponent runtime;
-    public List<SBTOutputInfo> output = new List<SBTOutputInfo>();
+    public List<BTOutputInfo> output = new List<BTOutputInfo>();
     public List<BehaviorTreeBaseState> lastStates;
-    public virtual ScriptableObject stateObj { get; }
+    public virtual BTStateObject stateObj { get; }
 
     public Action onEnterForRuntime;
     public Action onExitForRuntime;
 
     /// <summary>
-    /// ³õÊ¼»¯²ÎÊı
+    /// åˆå§‹åŒ–å‚æ•°
     /// </summary>
-    /// <param name="param">²ÎÊı</param>
+    /// <param name="param">å‚æ•°</param>
     public virtual void InitParam(string param) { }
 
     /// <summary>
-    /// ³õÊ¼»¯Öµ
+    /// åˆå§‹åŒ–å€¼
     /// </summary>
     public virtual void InitValue()
     {
@@ -33,7 +34,7 @@ public class BehaviorTreeBaseState
         Type type = GetType();
         foreach (BehaviorTreeBaseState lastState in lastStates)
         {
-            foreach (SBTOutputInfo inputInfo in lastState.output)
+            foreach (BTOutputInfo inputInfo in lastState.output)
             {
                 if (inputInfo.value == null) continue;
                 string memberName = inputInfo.toPortName;
@@ -45,17 +46,17 @@ public class BehaviorTreeBaseState
     }
 
     /// <summary>
-    /// Ë¢ĞÂÊä³ö
+    /// åˆ·æ–°è¾“å‡º
     /// </summary>
-    /// <param name="newInfo">ĞÂĞÅÏ¢</param>
-    /// <param name="isRemove">ÊÇ·ñÒÆ³ı</param>
-    public void RefreshOutput(SBTOutputInfo newInfo, bool isRemove)
+    /// <param name="newInfo">æ–°ä¿¡æ¯</param>
+    /// <param name="isRemove">æ˜¯å¦ç§»é™¤</param>
+    public void RefreshOutput(BTOutputInfo newInfo, bool isRemove)
     {
         if (isRemove)
         {
             for (int i = output.Count - 1; i > 0; i--)
             {
-                SBTOutputInfo info = output[i];
+                BTOutputInfo info = output[i];
                 if (info.fromPortName != newInfo.fromPortName) continue;
                 if (info.toPortName != newInfo.toPortName) continue;
                 output.Remove(info);
@@ -66,12 +67,12 @@ public class BehaviorTreeBaseState
     }
 
     /// <summary>
-    /// ±£´æ×´Ì¬
+    /// ä¿å­˜çŠ¶æ€
     /// </summary>
     public virtual void Save() { }
 
     /// <summary>
-    /// ³õÊ¼»¯½áÊø»Øµ÷
+    /// åˆå§‹åŒ–ç»“æŸå›è°ƒ
     /// </summary>
     public virtual void OnInitFinish()
     {
@@ -84,48 +85,56 @@ public class BehaviorTreeBaseState
     }
 
     /// <summary>
-    /// ½øÈë×´Ì¬»Øµ÷
+    /// è¿›å…¥çŠ¶æ€å›è°ƒ
     /// </summary>
-    public virtual void OnEnter() { InitValue(); state = EBTState.½øÈë; onEnterForRuntime?.Invoke(); }
+    public virtual void OnEnter() { InitValue(); state = EBTState.è¿›å…¥; onEnterForRuntime?.Invoke(); }
 
     /// <summary>
-    /// Ö´ĞĞ×´Ì¬»Øµ÷
+    /// æ‰§è¡ŒçŠ¶æ€å›è°ƒ
     /// </summary>
-    public virtual void OnExecute() { state = EBTState.Ö´ĞĞÖĞ; }
+    public virtual void OnExecute() { state = EBTState.æ‰§è¡Œä¸­; }
 
     /// <summary>
-    /// ÍË³ö×´Ì¬»Øµ÷
+    /// é€€å‡ºçŠ¶æ€å›è°ƒ
     /// </summary>
-    public virtual void OnExit() { state = EBTState.Íê³É; onExitForRuntime?.Invoke(); }
+    public virtual void OnExit() { state = EBTState.å®Œæˆ; onExitForRuntime?.Invoke(); }
 
     /// <summary>
-    /// Ë¢ĞÂ×´Ì¬»Øµ÷
+    /// æ‰“æ–­
+    /// </summary>
+    public virtual void OnInterrupt() { state = EBTState.ä¸­æ–­; }
+    /// <summary>
+    /// å›å¤æ‰“æ–­çŠ¶æ€
+    /// </summary>
+    public virtual void OnResume() { state = EBTState.æ‰§è¡Œä¸­; }
+    /// <summary>
+    /// åˆ·æ–°çŠ¶æ€å›è°ƒ
     /// </summary>
     public virtual void OnRefresh()
     {
-        state = EBTState.Î´¿ªÊ¼;
+        state = EBTState.æœªå¼€å§‹;
         ClearOutputList();
     }
 
     /// <summary>
-    /// Çå³ıÊä³öÁĞ±í
+    /// æ¸…é™¤è¾“å‡ºåˆ—è¡¨
     /// </summary>
     public virtual void ClearOutputList()
     {
         for (int i = 0; i < output.Count; i++)
         {
-            SBTOutputInfo info = output[i];
+            BTOutputInfo info = output[i];
             info.value = null;
             output[i] = info;
         }
     }
 
     /// <summary>
-    /// »ñÈ¡ÉÏÒ»¸ö·ûºÏÌõ¼şµÄ×´Ì¬
+    /// è·å–ä¸Šä¸€ä¸ªç¬¦åˆæ¡ä»¶çš„çŠ¶æ€
     /// </summary>
-    /// <typeparam name="T">×´Ì¬ÀàĞÍ</typeparam>
-    /// <param name="selectFunc">Ñ¡ÔñÌõ¼şº¯Êı</param>
-    /// <returns>·ûºÏÌõ¼şµÄ×´Ì¬</returns>
+    /// <typeparam name="T">çŠ¶æ€ç±»å‹</typeparam>
+    /// <param name="selectFunc">é€‰æ‹©æ¡ä»¶å‡½æ•°</param>
+    /// <returns>ç¬¦åˆæ¡ä»¶çš„çŠ¶æ€</returns>
     public T GetLastCoupleState<T>(Func<T, bool> selectFunc) where T : BehaviorTreeBaseState
     {
         T result = this as T;
@@ -142,10 +151,10 @@ public class BehaviorTreeBaseState
     }
 
     /// <summary>
-    /// ½«²Ù×÷´«µİµ½Ç°ÖÃ½Úµã£¬Ö±µ½¼ì²éµ½µÄ½Úµã·ûºÏÌõ¼ş
+    /// å°†æ“ä½œä¼ é€’åˆ°å‰ç½®èŠ‚ç‚¹ï¼Œç›´åˆ°æ£€æŸ¥åˆ°çš„èŠ‚ç‚¹ç¬¦åˆæ¡ä»¶
     /// </summary>
-    /// <param name="action">²Ù×÷º¯Êı</param>
-    /// <param name="checkFunc">¼ì²éÌõ¼şº¯Êı</param>
+    /// <param name="action">æ“ä½œå‡½æ•°</param>
+    /// <param name="checkFunc">æ£€æŸ¥æ¡ä»¶å‡½æ•°</param>
     public void Infect(Action<BehaviorTreeBaseState> action, Func<BehaviorTreeBaseState, bool> checkFunc)
     {
         action(this);
@@ -157,11 +166,11 @@ public class BehaviorTreeBaseState
     }
 
     /// <summary>
-    /// ¸üĞÂ×´Ì¬»Øµ÷
+    /// æ›´æ–°çŠ¶æ€å›è°ƒ
     /// </summary>
     public virtual void OnUpdate()
     {
-        if (state != EBTState.Ö´ĞĞÖĞ) goto wait;
+        if (state != EBTState.æ‰§è¡Œä¸­) goto wait;
         wait:;
     }
 }
@@ -169,15 +178,15 @@ public class BehaviorTreeBaseState
 [Serializable]
 public enum EBTState
 {
-    Î´¿ªÊ¼,
-    ½øÈë,
-    Ö´ĞĞÖĞ,
-    Íê³É,
-    µÈ´ı,
+    æœªå¼€å§‹,
+    è¿›å…¥,
+    æ‰§è¡Œä¸­,
+    å®Œæˆ,
+    ä¸­æ–­,
 }
 
 [Serializable]
-public struct SBTOutputInfo
+public class BTOutputInfo
 {
     public string fromPortName;
     public string toPortName;

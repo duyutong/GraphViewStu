@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 [Serializable]
@@ -26,7 +24,7 @@ public class NodeData
     public string nodeName;
     public string guid;
     public List<string> lastNodes;
-    public List<SBTOutputInfo> output;
+    public List<BTOutputInfo> output;
     public Vector2 nodePos;
     public string typeName;
     public string stateName;

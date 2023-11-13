@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using UnityEditor;
+ï»¿using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(BTRuntimeComponent))]
@@ -11,10 +8,10 @@ public class BTRuntimeComponentEditor : Editor
     {
         DrawDefaultInspector();
         BTRuntimeComponent script = (BTRuntimeComponent)target;
-        GUILayout.Space(10); // Ìí¼ÓÒ»Ğ©¿Õ¼ä
+        GUILayout.Space(10); // æ·»åŠ ä¸€äº›ç©ºé—´
         if (GUILayout.Button("OpenRuntimeView", GUILayout.Height(50)))
         {
-            // µã»÷°´Å¥Ê±µÄ²Ù×÷
+            // ç‚¹å‡»æŒ‰é’®æ—¶çš„æ“ä½œ
             BehaviourTreeEditor editor = BehaviourTreeEditor.OpenWindow();
             editor.LoadRuntimeContainer(script);
         }

@@ -14,18 +14,28 @@ using UnityEngine.UIElements;
 public class ProtSettingView : VisualElement
 {
     private BTNodePortSetting sPortInfo;
-    public Action<ProtSettingView> onRemovePort;
+    public Action<ProtSettingView> onDelPort;
     public Action onAddPort;
 
     private List<VisualElement> customVEList = new List<VisualElement>();
     private Button subBtn;
     private Button addBtn;
+    private Button delBtn;
+
+    private bool isShowAdd = false;
+    private bool isShowSub = false;
+    private bool isShowDel = false;
     public new class UxmlFactory : UxmlFactory<ProtSettingView, UxmlTraits> { }
     public void ShowProtSetting(BTNodePortSetting info, bool showAdd = false)
     {
         Type structType = typeof(BTNodePortSetting);
         FieldInfo[] fields = structType.GetFields();
         sPortInfo = info;
+
+        isShowAdd = showAdd;
+        isShowDel = isShowAdd;
+        isShowSub = !isShowDel;
+
         foreach (FieldInfo field in fields)
         {
             string fieldName = field.Name;
@@ -64,19 +74,25 @@ public class ProtSettingView : VisualElement
 
         foreach (VisualElement element in customVEList) element.SetEnabled(showAdd);
 
-        if (showAdd)
-        {
-            addBtn = new Button(OnClickAddBtn);
-            addBtn.text = "+";
-            buttonGroup.Add(addBtn);
-        }
-       
+        addBtn = new Button(OnClickAddBtn);
+        addBtn.text = "+";
+        buttonGroup.Add(addBtn);
+
         subBtn = new Button(OnClickSubBtn);
         subBtn.text = "-";
         buttonGroup.Add(subBtn);
 
+        delBtn = new Button(OnClickDelete);
+        delBtn.text = "×";
+        buttonGroup.Add(delBtn);
+
+        addBtn.style.display = isShowAdd ? DisplayStyle.Flex : DisplayStyle.None;
+        subBtn.style.display = isShowSub ? DisplayStyle.Flex : DisplayStyle.None;
+        delBtn.style.display = isShowDel ? DisplayStyle.Flex : DisplayStyle.None;
+
         Add(buttonGroup);
     }
+
     private bool CheckInput()
     {
         bool result = true;
@@ -84,18 +100,18 @@ public class ProtSettingView : VisualElement
         foreach (VisualElement element in customVEList)
         {
             TextField textField = element as TextField;
-            if (textField != null && string.IsNullOrEmpty(textField.text)) 
+            if (textField != null && string.IsNullOrEmpty(textField.text))
             {
                 result = false;
                 break;
-            } 
+            }
         }
         return result;
     }
     private void OnClickAddBtn()
     {
         bool checkInput = CheckInput();
-        if (!checkInput) 
+        if (!checkInput)
         {
             string title = "InputError";
             string message = "Warning: The input parameters are incorrect. Please review the ProtSetting panel for accuracy and make the necessary corrections.";
@@ -105,14 +121,33 @@ public class ProtSettingView : VisualElement
             return;
         }
 
-        addBtn.style.display = DisplayStyle.None;
+        isShowAdd = false;
+        isShowSub = true;
+        isShowDel = false;
+
+        addBtn.style.display = isShowAdd ? DisplayStyle.Flex : DisplayStyle.None;
+        subBtn.style.display = isShowSub ? DisplayStyle.Flex : DisplayStyle.None;
+        delBtn.style.display = isShowDel ? DisplayStyle.Flex : DisplayStyle.None;
+
         sPortInfo.node.AddPortForNode(sPortInfo);
         foreach (VisualElement element in customVEList) element.SetEnabled(false);
         onAddPort?.Invoke();
     }
     private void OnClickSubBtn()
     {
+        isShowAdd = true;
+        isShowSub = false;
+        isShowDel = true;
+
+        addBtn.style.display = isShowAdd ? DisplayStyle.Flex : DisplayStyle.None;
+        subBtn.style.display = isShowSub ? DisplayStyle.Flex : DisplayStyle.None;
+        delBtn.style.display = isShowDel ? DisplayStyle.Flex : DisplayStyle.None;
+
         sPortInfo.node.RemovePortFromNode(sPortInfo.portName, sPortInfo.direction);
-        onRemovePort?.Invoke(this);
+        foreach (VisualElement element in customVEList) element.SetEnabled(true);
+    }
+    private void OnClickDelete()
+    {
+        onDelPort?.Invoke(this);
     }
 }

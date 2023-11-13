@@ -1,13 +1,10 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
 using System;
 using UnityEditor.Experimental.GraphView;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using GluonGui.WorkspaceWindow.Views.WorkspaceExplorer;
 
 public class CustomNodeEditor : EditorWindow
 {
@@ -40,7 +37,7 @@ public class CustomNodeEditor : EditorWindow
     public void CreateGUI()
     {
         VisualElement root = rootVisualElement;
-        visualTreeAsset = Resources.Load<VisualTreeAsset>("UIBuilder/BehaviorTree/CustomNodeEditor");
+        visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/UIBuilder/BehaviorTree/CustomNodeEditor.uxml");
         visualTreeAsset.CloneTree(root);
         
         InitNodeTypeList();
@@ -107,7 +104,7 @@ public class CustomNodeEditor : EditorWindow
         BTNodePortSetting info = new BTNodePortSetting();
         info.node = currNode;
         setting.ShowProtSetting(info,true);
-        setting.onRemovePort = OnRemovePort;
+        setting.onDelPort = OnDeletePort;
         scrollView.Add(setting);
     }
 
@@ -140,13 +137,13 @@ public class CustomNodeEditor : EditorWindow
             info.portType = (EPortType)Enum.Parse(typeof(EPortType), port.portType.Name);
 
             setting.ShowProtSetting(info);
-            setting.onRemovePort = OnRemovePort;
+            setting.onDelPort = OnDeletePort;
             scrollView.Add(setting);
         }
 
         settingView.style.display = DisplayStyle.Flex;
     }
-    private void OnRemovePort(ProtSettingView view) 
+    private void OnDeletePort(ProtSettingView view) 
     {
         scrollView.contentContainer.Remove(view);
     }

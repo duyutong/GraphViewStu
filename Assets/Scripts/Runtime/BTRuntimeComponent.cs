@@ -9,13 +9,13 @@ public class BTRuntimeComponent : MonoBehaviour
     public Dictionary<string, BTState> stateDic = new Dictionary<string, BTState>();
     public Dictionary<string, List<string>> lastStateDic = new Dictionary<string, List<string>>();
     private bool isInitFinish;
-
+    private int componentIndex;
     private void Awake()
     {
         isInitFinish = false;
         LoadStates();
+        BTRuntimeController.AddRuntime(this, (_index) => { componentIndex = _index; });
     }
-
     /// <summary>
     /// 加载行为树状态
     /// </summary>
@@ -54,6 +54,21 @@ public class BTRuntimeComponent : MonoBehaviour
             action(state);
         }
     }
+    public void OnReceiveMsg(string stateTag,EBTState eBTState = EBTState.中断) 
+    {
+        foreach (KeyValuePair<string, BTState> keyValuePair in stateDic) 
+        {
+            BTState checkState = keyValuePair.Value;
+            //目前只处理打断
+            if (eBTState == EBTState.中断) 
+            {
+                if (checkState.state != EBTState.执行中) continue;
+                if (!checkState.interruptible) continue;
+                if (checkState.interruptTag != stateTag) continue;
+                checkState.OnInterrupt();
+            }
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -81,5 +96,9 @@ public class BTRuntimeComponent : MonoBehaviour
                 checkState.OnUpdate();
             }
         }
+    }
+    private void OnDestroy()
+    {
+        BTRuntimeController.RemoveRuntime(componentIndex);
     }
 }

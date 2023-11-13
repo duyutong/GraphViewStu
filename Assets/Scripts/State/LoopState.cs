@@ -15,7 +15,7 @@ public class LoopState : BehaviorTreeBaseState
 
     private LoopState lastLoopStartState;
     private int currCount;
-    public override ScriptableObject stateObj
+    public override BTStateObject stateObj 
     {
         get
         {
@@ -89,7 +89,7 @@ public class LoopState : BehaviorTreeBaseState
     }
 }
 
-public class LoopStateObj : ScriptableObject
+public class LoopStateObj : BTStateObject
 {
     public EBTState state;
     public ELoopState loopState;

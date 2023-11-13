@@ -14,7 +14,7 @@ public class InputState : BehaviorTreeBaseState
 {
     public Vector2 direction;
     private bool isInput { get { return direction != Vector2.zero; } }
-    public override ScriptableObject stateObj
+    public override BTStateObject stateObj 
     {
         get
         {
@@ -61,7 +61,7 @@ public class InputState : BehaviorTreeBaseState
     {
         for (int i = 0; i < output.Count; i++)
         {
-            SBTOutputInfo info = output[i];
+            BTOutputInfo info = output[i];
             if (info.fromPortName == "result"
                 && ((info.value != null && (Vector2)info.value != direction) || info.value == null))
             {
@@ -72,9 +72,9 @@ public class InputState : BehaviorTreeBaseState
         OnExit();
     }
 }
-public class InputStateObj : ScriptableObject
+public class InputStateObj : BTStateObject
 {
     public EBTState state;
     public Vector2 direction;
-    public List<SBTOutputInfo> output;
+    public List<BTOutputInfo> output;
 }

@@ -1,7 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/Editor/Resources/UIBuilder/ClockoutCountdown/ClockoutCountdown.uss?fileID=7433441132597879392&amp;guid=b598709795815c2469870ce6892bbf61&amp;type=3#ClockoutCountdown" />
-    <ui:Label text="o(*^▽^*)┛下班倒计时ヾ(≧▽≦*)o" display-tooltip-when-elided="true" style="-unity-text-align: middle-center; font-size: 30px; -unity-font-style: normal; top: 10px;" />
-    <ui:VisualElement style="position: absolute; height: auto; width: auto; left: 5%; right: 5%; top: 20%; bottom: 5%; flex-grow: 1; background-color: rgb(37, 37, 37); border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; justify-content: center;">
-        <ui:Label text="12：32：56" display-tooltip-when-elided="true" name="timeCount" style="flex-shrink: 1; flex-grow: 1; justify-content: center; align-items: center; font-size: 118px; -unity-text-align: middle-center;" />
-    </ui:VisualElement>
-</ui:UXML>

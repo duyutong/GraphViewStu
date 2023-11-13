@@ -1,8 +1,8 @@
-using System.Collections;
+锘縰sing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 // <summary>
-/// 自动生成cs文件时使用的预制文字
+/// 鑷姩鐢熸垚cs鏂囦欢鏃朵娇鐢ㄧ殑棰勫埗鏂囧瓧
 /// </summary>
 public class CSTemplate
 {
@@ -24,13 +24,13 @@ public class #Prefix#_#Title# : #NodeType#
 ";
     public const string inputContainerStr =
         @"
-        Port port_#PortName# = GetPortForNode(this, Direction.Input, typeof(#PortType#), Port.Capacity.#Capacity#);
+        Port port_#PortName# = CreatePortForNode(this, Direction.Input, typeof(#PortType#), Port.Capacity.#Capacity#);
         port_#PortName#.portName = ""#PortName#"";
         inputContainer.Add(port_#PortName#);
 ";
     public const string outputContainerStr =
         @"
-        Port port_#PortName# = GetPortForNode(this, Direction.Output, typeof(#PortType#), Port.Capacity.#Capacity#);
+        Port port_#PortName# = CreatePortForNode(this, Direction.Output, typeof(#PortType#), Port.Capacity.#Capacity#);
         port_#PortName#.portName = ""#PortName#"";
         outputContainer.Add(port_#PortName#);
 ";
@@ -47,7 +47,7 @@ public class #StateName#State : BehaviorTreeBaseState
 {
     #PublicProperty#
 
-    public override ScriptableObject stateObj 
+    public override BTStateObject stateObj 
     {
         get 
         {
@@ -56,6 +56,8 @@ public class #StateName#State : BehaviorTreeBaseState
                 _stateObj = ScriptableObject.CreateInstance<#StateName#StateObj>();
                 _stateObj.state = state;
                 _stateObj.output = output;
+                _stateObj.interruptible = interruptible;
+                _stateObj.interruptTag = interruptTag;
                 #SetObjPropValue#
             }
             return _stateObj;
@@ -68,21 +70,25 @@ public class #StateName#State : BehaviorTreeBaseState
         using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(param)))
         {
             _stateObj = (#StateName#StateObj)jsonSerializer.ReadObject(stream);
+            output = _stateObj.output;
             #SetPropValue#
         }
     }
     public override void Save()
     {
         if (stateObj == null) return;
+        output = _stateObj.output;
+        interruptible = _stateObj.interruptible;
+        interruptTag = _stateObj.interruptTag;
         #SetPropValue#
     }
 }
-public class #StateName#StateObj : ScriptableObject
+public class #StateName#StateObj : BTStateObject
 {
     public EBTState state;
     #PublicProperty#
 
-    public List<SBTOutputInfo> output;
+    public List<BTOutputInfo> output;
 }
 ";
     public const string initPropStr1 = @"

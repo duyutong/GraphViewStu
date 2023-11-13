@@ -8,7 +8,7 @@ using UnityEngine;
 public class DebugState : BehaviorTreeBaseState
 {
     public string logStr;
-    public override ScriptableObject stateObj 
+    public override BTStateObject stateObj 
     {
         get 
         {
@@ -52,7 +52,7 @@ public class DebugState : BehaviorTreeBaseState
         base .OnExit();
     }
 }
-public class DebugStateObj : ScriptableObject
+public class DebugStateObj : BTStateObject
 {
     public EBTState state;
     public string logStr;

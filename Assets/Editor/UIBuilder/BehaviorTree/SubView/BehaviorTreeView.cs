@@ -155,7 +155,7 @@ public class BehaviorTreeView : GraphView
                         BTBaseNode toNode = edge.input.node as BTBaseNode;
                         toNode.lastNodes.Remove(fromNode);
 
-                        SBTOutputInfo info = new SBTOutputInfo();
+                        BTOutputInfo info = new BTOutputInfo();
                         info.fromPortName = edge.output.portName;
                         info.toPortName = edge.input.portName;
                         fromNode.btState.RefreshOutput(info, true);
@@ -171,7 +171,7 @@ public class BehaviorTreeView : GraphView
                 BTBaseNode toNode = edge.input.node as BTBaseNode;
                 toNode.lastNodes.Add(fromNode);
 
-                SBTOutputInfo info = new SBTOutputInfo();
+                BTOutputInfo info = new BTOutputInfo();
                 info.fromPortName = edge.output.portName;
                 info.toPortName = edge.input.portName;
                 fromNode.btState.RefreshOutput(info, false);

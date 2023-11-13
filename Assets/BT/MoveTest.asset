@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a82911627f4159419e3264d17be5abb, type: 3}
+  m_Name: MoveTest
+  m_EditorClassIdentifier: 
+  nodeDatas:
+  - nodeName: Start
+    guid: 2043e8c1-39cb-4ee7-91ce-6c50acb2fbdc
+    lastNodes: []
+    output:
+    - fromPortName: next
+      toPortName: enter
+    - fromPortName: next
+      toPortName: enter
+    nodePos: {x: -73, y: 1}
+    typeName: Trigger_Start
+    stateName: StartState
+    stateParams: '{"hideFlags":0,"name":"","interruptTag":"","interruptible":false,"text":"StartState"}'
+  - nodeName: Loop
+    guid: 42514e78-a796-4190-9deb-eaa83460e5df
+    lastNodes:
+    - 2043e8c1-39cb-4ee7-91ce-6c50acb2fbdc
+    output:
+    - fromPortName: exit
+      toPortName: enter
+    nodePos: {x: 89, y: 1}
+    typeName: Deco_Loop
+    stateName: LoopState
+    stateParams: '{"hideFlags":0,"name":"","interruptTag":"","interruptible":false,"loopCount":0,"loopState":0,"state":0}'
+  - nodeName: Input
+    guid: a08f6dd1-35f5-4918-8237-43aae9afd802
+    lastNodes:
+    - 42514e78-a796-4190-9deb-eaa83460e5df
+    output:
+    - fromPortName: result
+      toPortName: direction
+    nodePos: {x: 299, y: 1}
+    typeName: Trigger_Input
+    stateName: InputState
+    stateParams: '{"hideFlags":0,"name":"","interruptTag":"","interruptible":false,"direction":{"x":0,"y":0},"output":[{"fromPortName":"result","toPortName":"direction","value":null}],"state":0}'
+  - nodeName: Move
+    guid: 80c1335e-0163-43d8-b276-eadc29efc38f
+    lastNodes:
+    - a08f6dd1-35f5-4918-8237-43aae9afd802
+    output:
+    - fromPortName: exit
+      toPortName: enter
+    nodePos: {x: 496, y: -47}
+    typeName: Behav_Move
+    stateName: MoveState
+    stateParams: '{"hideFlags":0,"name":"","interruptTag":"Test","interruptible":true,"direction":{"x":0,"y":0},"moveTime":3,"output":[{"fromPortName":"exit","toPortName":"enter","value":null}],"speed":1,"state":0}'
+  - nodeName: Loop
+    guid: 4384adbd-1319-44e9-96f7-42b4d94acd49
+    lastNodes:
+    - 80c1335e-0163-43d8-b276-eadc29efc38f
+    output: []
+    nodePos: {x: 719, y: -23}
+    typeName: Deco_Loop
+    stateName: LoopState
+    stateParams: '{"hideFlags":0,"name":"","interruptTag":"","interruptible":false,"loopCount":-1,"loopState":1,"state":0}'
+  edgeDatas:
+  - outPortNode: 2043e8c1-39cb-4ee7-91ce-6c50acb2fbdc
+    intputPortNode: 42514e78-a796-4190-9deb-eaa83460e5df
+    outPortName: next
+    intputPortName: enter
+  - outPortNode: 42514e78-a796-4190-9deb-eaa83460e5df
+    intputPortNode: a08f6dd1-35f5-4918-8237-43aae9afd802
+    outPortName: exit
+    intputPortName: enter
+  - outPortNode: a08f6dd1-35f5-4918-8237-43aae9afd802
+    intputPortNode: 80c1335e-0163-43d8-b276-eadc29efc38f
+    outPortName: result
+    intputPortName: direction
+  - outPortNode: 80c1335e-0163-43d8-b276-eadc29efc38f
+    intputPortNode: 4384adbd-1319-44e9-96f7-42b4d94acd49
+    outPortName: exit
+    intputPortName: enter

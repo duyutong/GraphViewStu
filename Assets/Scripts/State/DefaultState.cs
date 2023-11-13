@@ -9,7 +9,7 @@ public class DefaultState : BehaviorTreeBaseState
 {
     public string stateName => "DefaultState";
 
-    public override ScriptableObject stateObj 
+    public override BTStateObject stateObj 
     {
         get 
         {
@@ -26,7 +26,7 @@ public class DefaultState : BehaviorTreeBaseState
 
     public override void OnUpdate() { }
 }
-public class DefaultStateObj: ScriptableObject
+public class DefaultStateObj: BTStateObject
 {
     public string text = "DefaultState";
 }
