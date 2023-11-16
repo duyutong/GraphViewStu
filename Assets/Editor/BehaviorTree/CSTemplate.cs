@@ -66,6 +66,7 @@ public class #StateName#State : BehaviorTreeBaseState
     private #StateName#StateObj _stateObj;
     public override void InitParam(string param)
     {
+        base.InitParam(param);
         DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(#StateName#StateObj));
         using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(param)))
         {

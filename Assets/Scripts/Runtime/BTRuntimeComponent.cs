@@ -35,6 +35,11 @@ public class BTRuntimeComponent : MonoBehaviour
         foreach (KeyValuePair<string, BTState> keyValuePair in stateDic)
         {
             BTState state = keyValuePair.Value;
+            state.OnInitLastStates();
+        }
+        foreach (KeyValuePair<string, BTState> keyValuePair in stateDic)
+        {
+            BTState state = keyValuePair.Value;
             state.OnInitFinish();
         }
         isInitFinish = true;
@@ -54,13 +59,13 @@ public class BTRuntimeComponent : MonoBehaviour
             action(state);
         }
     }
-    public void OnReceiveMsg(string stateTag,EBTState eBTState = EBTState.中断) 
+    public void OnReceiveMsg(string stateTag, EBTState eBTState = EBTState.中断)
     {
-        foreach (KeyValuePair<string, BTState> keyValuePair in stateDic) 
+        foreach (KeyValuePair<string, BTState> keyValuePair in stateDic)
         {
             BTState checkState = keyValuePair.Value;
             //目前只处理打断
-            if (eBTState == EBTState.中断) 
+            if (eBTState == EBTState.中断)
             {
                 if (checkState.state != EBTState.执行中) continue;
                 if (!checkState.interruptible) continue;
@@ -77,6 +82,7 @@ public class BTRuntimeComponent : MonoBehaviour
         {
             string nodeId = keyValuePair.Key;
             BTState checkState = keyValuePair.Value;
+            bool isLogicGate = (checkState as LogicGateState) != null;
             if (lastStateDic[nodeId].Count == 0 && checkState.state == EBTState.未开始)
             {
                 checkState.OnEnter();
@@ -84,11 +90,12 @@ public class BTRuntimeComponent : MonoBehaviour
             else if (checkState.state == EBTState.未开始)
             {
                 int checkCount = lastStateDic[nodeId].Count;
+                bool isExistFinish = false;
                 foreach (string lastStateId in lastStateDic[nodeId])
                 {
                     BTState lastState = stateDic[lastStateId];
-                    if (lastState.state == EBTState.完成) checkCount--;
-                    if (checkCount == 0) checkState.OnEnter();
+                    if (lastState.state == EBTState.完成) { checkCount--; isExistFinish = true; }
+                    if ((isLogicGate && isExistFinish) || checkCount == 0) checkState.OnEnter();
                 }
             }
             else if (checkState.state == EBTState.执行中)

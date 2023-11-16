@@ -11,11 +11,12 @@ using UnityEngine;
 public class LoopState : BehaviorTreeBaseState
 {
     public ELoopState loopState = ELoopState.循环开始;
+    public string loopTag;
     public int loopCount = 0;
 
     private LoopState lastLoopStartState;
     private int currCount;
-    public override BTStateObject stateObj 
+    public override BTStateObject stateObj
     {
         get
         {
@@ -25,6 +26,7 @@ public class LoopState : BehaviorTreeBaseState
                 _stateObj.loopState = loopState;
                 _stateObj.loopCount = loopCount;
                 _stateObj.state = state;
+                _stateObj.loopTag = loopTag;
             }
             return _stateObj;
         }
@@ -33,6 +35,7 @@ public class LoopState : BehaviorTreeBaseState
 
     public override void InitParam(string param)
     {
+        base.InitParam(param);
         DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(LoopStateObj));
         using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(param)))
         {
@@ -40,11 +43,11 @@ public class LoopState : BehaviorTreeBaseState
             loopState = _stateObj.loopState;
             loopCount = _stateObj.loopCount;
             currCount = _stateObj.loopCount;
+            loopTag = _stateObj.loopTag;
         }
     }
     public override void OnInitFinish()
     {
-        base.OnInitFinish();
         FindLastLoopStart();
     }
     public override void Save()
@@ -52,6 +55,7 @@ public class LoopState : BehaviorTreeBaseState
         if (stateObj == null) return;
         loopState = _stateObj.loopState;
         loopCount = _stateObj.loopCount;
+        loopTag = _stateObj.loopTag;
     }
     public override void OnEnter()
     {
@@ -59,11 +63,11 @@ public class LoopState : BehaviorTreeBaseState
         else
         {
             if (loopCount >= 0)
-            { 
+            {
                 --currCount;
                 if (currCount <= 0) { OnExit(); return; }
             }
-           
+
             base.OnExecute();
             Infect((_s) =>
             {
@@ -82,9 +86,11 @@ public class LoopState : BehaviorTreeBaseState
     }
     private void FindLastLoopStart()
     {
-        lastLoopStartState = GetLastCoupleState<LoopState>((_s) =>
+        lastLoopStartState = GetLastMatchingState<LoopState>((_s) =>
         {
-            return _s.loopState == ELoopState.循环开始;
+            if (_s.loopState != ELoopState.循环开始) return false;
+            if (_s.loopTag != loopTag) return false;
+            return true;
         });
     }
 }
@@ -93,6 +99,7 @@ public class LoopStateObj : BTStateObject
 {
     public EBTState state;
     public ELoopState loopState;
+    public string loopTag;
     public int loopCount;
 }
 

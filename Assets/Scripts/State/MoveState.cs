@@ -31,6 +31,7 @@ public class MoveState : BehaviorTreeBaseState
     private MoveStateObj _stateObj;
     public override void InitParam(string param)
     {
+        base.InitParam(param);
         DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(MoveStateObj));
         using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(param)))
         {

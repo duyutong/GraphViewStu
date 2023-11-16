@@ -9,7 +9,7 @@ public class Deco_TimeDelay : DecoratorNode
     {
         title = "TimeDelay";
 
-        Port port_enter = CreatePortForNode(this, Direction.Input, typeof(Boolean), Port.Capacity.Single);
+        Port port_enter = CreatePortForNode(this, Direction.Input, typeof(Boolean), Port.Capacity.Multi);
         port_enter.portName = "enter";
         inputContainer.Add(port_enter);
 

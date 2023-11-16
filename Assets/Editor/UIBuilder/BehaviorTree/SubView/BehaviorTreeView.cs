@@ -82,7 +82,7 @@ public class BehaviorTreeView : GraphView
     /// </summary>
     private bool OnCanPasteSerializedData(string data)
     {
-        return !string.IsNullOrEmpty(clipboard);
+       return !string.IsNullOrEmpty(clipboard);
     }
 
     /// <summary>
@@ -372,7 +372,11 @@ public class BehaviorTreeView : GraphView
         }
         return type;
     }
-
+    public void ClearAllNodeAndEdge() 
+    {
+        foreach (Node node in nodes) { RemoveElement(node); }
+        foreach (Edge edge in edges) { RemoveElement(edge); }
+    }
     /// <summary>
     /// 获取兼容的端口
     /// </summary>

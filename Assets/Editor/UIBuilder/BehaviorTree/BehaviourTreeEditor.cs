@@ -64,6 +64,7 @@ public class BehaviourTreeEditor : EditorWindow
         nameTextField.SetEnabled(false);
         treeField.SetEnabled(false);
 
+        behaviorTreeView.ClearAllNodeAndEdge();
         bool isPlaying = Application.isPlaying;
         if (isPlaying) behaviorTreeView.LoadRuntimeData(runtime);
         else behaviorTreeView.LoadData(container);

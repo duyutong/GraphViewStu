@@ -1,0 +1,134 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a82911627f4159419e3264d17be5abb, type: 3}
+  m_Name: BranchTest
+  m_EditorClassIdentifier: 
+  nodeDatas:
+  - nodeName: Start
+    guid: fefa51ed-5970-4bb1-9680-41b75b5e13e7
+    lastNodes: []
+    output:
+    - fromPortName: next
+      toPortName: enter
+    nodePos: {x: 41, y: 51}
+    typeName: Trigger_Start
+    stateName: StartState
+    stateParams: '{"hideFlags":0,"name":"","interruptTag":"","interruptible":false,"text":"StartState"}'
+  - nodeName: RandomBranching
+    guid: 014260e9-8849-4723-bb13-1b9be3bebbdc
+    lastNodes:
+    - fefa51ed-5970-4bb1-9680-41b75b5e13e7
+    output:
+    - fromPortName: exit
+      toPortName: enter
+    - fromPortName: exit
+      toPortName: enter
+    nodePos: {x: 176, y: 51}
+    typeName: Deco_RandomBranching
+    stateName: RandomBranchingState
+    stateParams: '{"hideFlags":0,"name":"","interruptTag":"","interruptible":false,"output":[{"fromPortName":"exit","toPortName":"enter","value":null},{"fromPortName":"exit","toPortName":"enter","value":null}],"parallelCount":1,"state":0}'
+  - nodeName: TimeDelay
+    guid: 218233c0-e168-4d72-8bc7-a02b45eea511
+    lastNodes:
+    - 014260e9-8849-4723-bb13-1b9be3bebbdc
+    output:
+    - fromPortName: exit
+      toPortName: enter
+    nodePos: {x: 451, y: 1}
+    typeName: Deco_TimeDelay
+    stateName: TimeDelayState
+    stateParams: '{"hideFlags":0,"name":"","interruptTag":"","interruptible":false,"delayTime":3,"output":[{"fromPortName":"exit","toPortName":"enter","value":null}],"state":0}'
+  - nodeName: TimeDelay
+    guid: c628c9ab-8cbd-4619-a60a-c0e2eaeeae69
+    lastNodes:
+    - 014260e9-8849-4723-bb13-1b9be3bebbdc
+    output: []
+    nodePos: {x: 451, y: 119}
+    typeName: Deco_TimeDelay
+    stateName: TimeDelayState
+    stateParams: '{"hideFlags":0,"name":"","interruptTag":"","interruptible":false,"delayTime":3,"output":[],"state":0}'
+  - nodeName: Debug
+    guid: e1f0d8b6-3a0b-474f-8d08-ca0215eab67f
+    lastNodes:
+    - 218233c0-e168-4d72-8bc7-a02b45eea511
+    output:
+    - fromPortName: exit
+      toPortName: enter
+    nodePos: {x: 639, y: 1}
+    typeName: Deco_Debug
+    stateName: DebugState
+    stateParams: "{\"hideFlags\":0,\"name\":\"\",\"interruptTag\":\"\",\"interruptible\":false,\"logStr\":\"\u5206\u652F1\",\"state\":0}"
+  - nodeName: Debug
+    guid: 76595e65-23f2-4b6b-92b1-6245193826dd
+    lastNodes:
+    - c628c9ab-8cbd-4619-a60a-c0e2eaeeae69
+    output:
+    - fromPortName: exit
+      toPortName: enter
+    nodePos: {x: 639, y: 119}
+    typeName: Deco_Debug
+    stateName: DebugState
+    stateParams: "{\"hideFlags\":0,\"name\":\"\",\"interruptTag\":\"\",\"interruptible\":false,\"logStr\":\"\u5206\u652F1\",\"state\":0}"
+  - nodeName: LogicGate
+    guid: b1e06b73-2bab-45dd-a055-943853d1c52a
+    lastNodes:
+    - e1f0d8b6-3a0b-474f-8d08-ca0215eab67f
+    - 76595e65-23f2-4b6b-92b1-6245193826dd
+    output:
+    - fromPortName: exit
+      toPortName: enter
+    nodePos: {x: 855, y: 64}
+    typeName: Deco_LogicGate
+    stateName: LogicGateState
+    stateParams: '{"hideFlags":0,"name":"","interruptTag":"","interruptible":false,"logicType":1,"output":[{"fromPortName":"exit","toPortName":"enter","value":null}],"state":0}'
+  - nodeName: Debug
+    guid: 55142b96-8daf-41e6-8737-462b2352fe14
+    lastNodes:
+    - b1e06b73-2bab-45dd-a055-943853d1c52a
+    output: []
+    nodePos: {x: 1067, y: 64}
+    typeName: Deco_Debug
+    stateName: DebugState
+    stateParams: "{\"hideFlags\":0,\"name\":\"\",\"interruptTag\":\"\",\"interruptible\":false,\"logStr\":\"\u5206\u652F3\",\"state\":0}"
+  edgeDatas:
+  - outPortNode: fefa51ed-5970-4bb1-9680-41b75b5e13e7
+    intputPortNode: 014260e9-8849-4723-bb13-1b9be3bebbdc
+    outPortName: next
+    intputPortName: enter
+  - outPortNode: 014260e9-8849-4723-bb13-1b9be3bebbdc
+    intputPortNode: 218233c0-e168-4d72-8bc7-a02b45eea511
+    outPortName: exit
+    intputPortName: enter
+  - outPortNode: 218233c0-e168-4d72-8bc7-a02b45eea511
+    intputPortNode: e1f0d8b6-3a0b-474f-8d08-ca0215eab67f
+    outPortName: exit
+    intputPortName: enter
+  - outPortNode: c628c9ab-8cbd-4619-a60a-c0e2eaeeae69
+    intputPortNode: 76595e65-23f2-4b6b-92b1-6245193826dd
+    outPortName: exit
+    intputPortName: enter
+  - outPortNode: 014260e9-8849-4723-bb13-1b9be3bebbdc
+    intputPortNode: c628c9ab-8cbd-4619-a60a-c0e2eaeeae69
+    outPortName: exit
+    intputPortName: enter
+  - outPortNode: e1f0d8b6-3a0b-474f-8d08-ca0215eab67f
+    intputPortNode: b1e06b73-2bab-45dd-a055-943853d1c52a
+    outPortName: exit
+    intputPortName: enter
+  - outPortNode: 76595e65-23f2-4b6b-92b1-6245193826dd
+    intputPortNode: b1e06b73-2bab-45dd-a055-943853d1c52a
+    outPortName: exit
+    intputPortName: enter
+  - outPortNode: b1e06b73-2bab-45dd-a055-943853d1c52a
+    intputPortNode: 55142b96-8daf-41e6-8737-462b2352fe14
+    outPortName: exit
+    intputPortName: enter

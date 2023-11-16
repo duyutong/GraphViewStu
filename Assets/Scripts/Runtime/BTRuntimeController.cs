@@ -21,6 +21,7 @@ public class BTRuntimeController : MonoBehaviour
     {
         foreach (BTRuntimeComponent bTRuntime in bTRuntimes)
         {
+            if (bTRuntime == null) continue;
             bTRuntime.OnReceiveMsg(_tag);
         }
     }

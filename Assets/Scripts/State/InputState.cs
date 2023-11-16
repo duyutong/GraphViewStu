@@ -31,6 +31,7 @@ public class InputState : BehaviorTreeBaseState
     private InputStateObj _stateObj;
     public override void InitParam(string param)
     {
+        base.InitParam(param);
         DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(InputStateObj));
         using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(param)))
         {

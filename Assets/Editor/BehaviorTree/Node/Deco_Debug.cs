@@ -10,7 +10,7 @@ public class Deco_Debug : DecoratorNode
     {
         title = "Debug";
 
-        Port ePort = CreatePortForNode(this, Direction.Input, typeof(bool), Port.Capacity.Single);
+        Port ePort = CreatePortForNode(this, Direction.Input, typeof(bool), Port.Capacity.Multi);
         ePort.portName = "enter";
         inputContainer.Add(ePort);
 
