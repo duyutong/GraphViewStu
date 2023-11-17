@@ -52,7 +52,7 @@ public class LogicGateState : BehaviorTreeBaseState
     }
     public override void OnInitFinish()
     {
-        if (logicType == ELogic.NOT) base.OnExit();
+        if (logicType == ELogic.NOT) {base.OnExit();}
     }
     public override void OnEnter()
     {
