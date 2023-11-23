@@ -22,6 +22,8 @@ public class BehaviorTreeView : GraphView
 
     private BTRuntimeComponent runtime;
     private Color oriColor;
+
+    private Vector2 lastScreenMousePosition;
     public new class UxmlFactory : UxmlFactory<BehaviorTreeView, UxmlTraits> { }
 
     /// <summary>
@@ -41,17 +43,18 @@ public class BehaviorTreeView : GraphView
         SearchMenuWindowProvider menu = ScriptableObject.CreateInstance<SearchMenuWindowProvider>();
         nodeCreationRequest += contentRect =>
         {
+            lastScreenMousePosition = contentRect.screenMousePosition;
             SearchWindow.Open(new SearchWindowContext(contentRect.screenMousePosition), menu);
         };
         menu.onSelectEntryHandler += (entry, context) =>
         {
             Type type = Type.GetType(entry.name);
-            return CreatNode(type);
+            return CreatNode(type, lastScreenMousePosition);
         };
 
         graphViewChanged += OnGraphViewChanged;                     //处理连线生成和删除node时的相关连线清理
-        serializeGraphElements += OnSerializeGraphElements;         //处理复制信息的编译
-        unserializeAndPaste += OnUnserializeAndPaste;               //处理粘贴信息的反编译以及对象生成
+        serializeGraphElements += OnSerializeGraphElements;         //处理复制信息的序列化
+        unserializeAndPaste += OnUnserializeAndPaste;               //处理粘贴信息的反序列化以及对象生成
         canPasteSerializedData += OnCanPasteSerializedData;         //处理对是否激活粘贴按钮的判断
     }
 
@@ -63,8 +66,8 @@ public class BehaviorTreeView : GraphView
         clipboard = string.Empty;
 
         graphViewChanged -= OnGraphViewChanged;                     //处理连线生成和删除node时的相关连线清理
-        serializeGraphElements -= OnSerializeGraphElements;         //处理复制信息的编译
-        unserializeAndPaste -= OnUnserializeAndPaste;               //处理粘贴信息的反编译以及对象生成
+        serializeGraphElements -= OnSerializeGraphElements;         //处理复制信息的序列化
+        unserializeAndPaste -= OnUnserializeAndPaste;               //处理粘贴信息的反序列化以及对象生成
         canPasteSerializedData -= OnCanPasteSerializedData;         //处理对是否激活粘贴按钮的判断
     }
 
